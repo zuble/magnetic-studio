@@ -51,15 +51,16 @@ public class gameplayForm extends javax.swing.JFrame {
         timer.start();
     }    
     
-    public void passData(String user) {
+    public void passData(String user) throws SQLException {
         this.user = user;
         PreparedStatement st;
-        ResultSet rs;
+        ResultSet rs=null;
         
         //GET USER INFO
         String queryClass = "SELECT * FROM `users` WHERE `username` = ? ";
         try {
-            st = My_CNX.getConnection().prepareStatement(queryClass);
+            st = My_CNX.getConnection().prepareStatement(queryClass,ResultSet.TYPE_SCROLL_SENSITIVE, 
+                        ResultSet.CONCUR_UPDATABLE);
             st.setString(1, user);
             rs = st.executeQuery();
             
@@ -73,6 +74,7 @@ public class gameplayForm extends javax.swing.JFrame {
             } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        rs.beforeFirst();
         
         //SET BACKGROUND AND IMAGES
         if ("fitness".equals(Quest)){
@@ -167,8 +169,8 @@ public class gameplayForm extends javax.swing.JFrame {
         jButtonChallenge = new javax.swing.JButton();
         jLabelMarketMan = new javax.swing.JLabel();
         JbuttonMarket = new javax.swing.JButton();
-        jButtonComplete = new javax.swing.JButton();
         jButtonReturn = new javax.swing.JButton();
+        jButtonComplete = new javax.swing.JButton();
         Background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -318,6 +320,11 @@ public class gameplayForm extends javax.swing.JFrame {
                 jButtonCatalfMouseClicked(evt);
             }
         });
+        jButtonCatalf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCatalfActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButtonCatalf);
         jButtonCatalf.setBounds(530, 240, 160, 30);
 
@@ -379,17 +386,13 @@ public class gameplayForm extends javax.swing.JFrame {
         JbuttonMarket.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
         JbuttonMarket.setText("Market");
         JbuttonMarket.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel1.add(JbuttonMarket);
-        JbuttonMarket.setBounds(530, 441, 160, 30);
-
-        jButtonComplete.setText("Complete");
-        jButtonComplete.addActionListener(new java.awt.event.ActionListener() {
+        JbuttonMarket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCompleteActionPerformed(evt);
+                JbuttonMarketActionPerformed(evt);
             }
         });
-        jPanel1.add(jButtonComplete);
-        jButtonComplete.setBounds(280, 310, 110, 25);
+        jPanel1.add(JbuttonMarket);
+        JbuttonMarket.setBounds(530, 441, 160, 30);
 
         jButtonReturn.setText("Return");
         jButtonReturn.addActionListener(new java.awt.event.ActionListener() {
@@ -398,7 +401,16 @@ public class gameplayForm extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButtonReturn);
-        jButtonReturn.setBounds(380, 450, 66, 25);
+        jButtonReturn.setBounds(380, 450, 79, 29);
+
+        jButtonComplete.setText("Complete");
+        jButtonComplete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCompleteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonComplete);
+        jButtonComplete.setBounds(280, 310, 110, 29);
 
         Background.setBackground(new java.awt.Color(255, 255, 51));
         Background.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
@@ -458,9 +470,25 @@ public class gameplayForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         PreparedStatement st;
         ResultSet rs;
+        boolean val=true;
         
-        //UPDATE USER WALLET
+        //UPDATE USER WALLET IF THERE IS A MISSION
+
+        String queryChall = "SELECT * FROM `challenge` WHERE `chall_quest` = ? AND `chall_id` NOT IN "
+                            + "(SELECT `chall_id` FROM `backpack_chall` where `usr`= ? ) ORDER BY RAND() LIMIT 1";
+        try {
+            st = My_CNX.getConnection().prepareStatement(queryChall);   
+            st.setString(1, Quest);
+            st.setString(2, user);
+            rs = st.executeQuery();
+            val=rs.next(); //Verifica se há mais missões ou não
+            } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Important "+jLabelChall.getText().isEmpty());
+        
         String pointQuery = "UPDATE `users` SET `wallet`=`wallet` + ? WHERE `username` = ? ";
+       if(val==true && jLabelChall.getText().isEmpty()==false){
         try {
             st = My_CNX.getConnection().prepareStatement(pointQuery);
             st.setInt(1,Chall_coins);
@@ -477,14 +505,17 @@ public class gameplayForm extends javax.swing.JFrame {
             st.setString(1,user);
             rs = st.executeQuery();
             rs.next();
+            int currentCoins=rs.getInt(1);
+            updateTable(currentCoins);
             jLabelMoney.setText(rs.getString(1));
             jLabelChall.setText(" ");
             } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        
         //INSERT COMPLETED CHALL INTO BACKPACK_CHALL
-        String updateBackpack_chall = "INSERT INTO `backpack_chall`(`usr`,`chall_id`) VALUES (?,?)";
+        String updateBackpack_chall = "UPDATE `backpack_chall` SET `usr`= ?, `chall_id`=?";
          try {
             st = My_CNX.getConnection().prepareStatement(updateBackpack_chall);
             st.setString(1,user);
@@ -493,12 +524,54 @@ public class gameplayForm extends javax.swing.JFrame {
             } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
     }//GEN-LAST:event_jButtonCompleteActionPerformed
+    
+    }
+    
+    void updateTable(int currentCoins){
+         jCatalfRankDisplayPane.setVisible(false);
+        PreparedStatement st,st1;
+        ResultSet rs=null,rs1=null;
+        String removeUserInfo=null;
+        DefaultTableModel tb1Model=null;
 
+                tb1Model = (DefaultTableModel)jUserRankTable.getModel();
+                tb1Model.setRowCount(0);
+                
+                       String queryWalletRank = "SELECT * FROM `users` ORDER BY `wallet` DESC";
+            try {
+                st = My_CNX.getConnection().prepareStatement(queryWalletRank,ResultSet.TYPE_SCROLL_INSENSITIVE,
+    ResultSet.CONCUR_READ_ONLY);   
+                rs = st.executeQuery();
+
+                while(rs.next()){
+                    String data[] = { rs.getString("username"), rs.getString("Quest") , rs.getString("wallet") };
+                    tb1Model = (DefaultTableModel)jUserRankTable.getModel();
+                    tb1Model.addRow(data);
+                }
+                } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    
+    
     /* ADD RETURN STUFF */
     private void jButtonReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReturnActionPerformed
         // TODO add your handling code here:
+        AdventureSelection new_adventure=new AdventureSelection();
+        new_adventure.passData(this.user,this.Class);
+        new_adventure.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonReturnActionPerformed
+
+    private void JbuttonMarketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonMarketActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JbuttonMarketActionPerformed
+
+    private void jButtonCatalfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCatalfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCatalfActionPerformed
 
     /**
      * @param args the command line arguments
@@ -530,7 +603,9 @@ public class gameplayForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new gameplayForm().setVisible(true);
+                gameplayForm gmf=new gameplayForm();
+                gmf.setVisible(true);
+                
             }
         });
     }

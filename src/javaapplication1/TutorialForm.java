@@ -7,6 +7,9 @@ package javaapplication1;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -368,7 +371,11 @@ public class TutorialForm extends javax.swing.JFrame {
         }
            if(buttonPressedNo == 7){
                 gameplayForm gmf = new gameplayForm();
-                gmf.passData(user);
+             try {
+                 gmf.passData(user);
+             } catch (SQLException ex) {
+                 Logger.getLogger(TutorialForm.class.getName()).log(Level.SEVERE, null, ex);
+             }
                 gmf.setVisible(true);
                 gmf.pack();
                 gmf.setLocationRelativeTo(null);
