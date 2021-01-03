@@ -355,7 +355,8 @@ public class RegisterForm extends javax.swing.JFrame {
                     Logger.getLogger(RegisterForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }   
+        }  
+                     player new_player= new player(uname,pass1);
     }//GEN-LAST:event_jButtonRegisterActionPerformed
 
     private void CancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMouseClicked

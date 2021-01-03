@@ -40,34 +40,40 @@ public class TutorialForm extends javax.swing.JFrame {
         jLabelMarketMan.setVisible(false);
         JbuttonMarket.setVisible(false);
         jButtonCatalf.setVisible(false);
+        
+        // NOI18N
     }
-    
-    public void setIcon(){
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
-    }
-    
     public void passData(String user, String Quest, String Class) {
         this.user = user;
         this.Quest = Quest;
         this.Class = Class;
       
-        if ("fitness".equals(Quest)){
+          if ("fitness".equals(Quest))
+          {
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fitnessCenter.png")));
             jLabeltext.setText("<html> Welcome to the Fighters Guild! Here you will be trained to achieve your fitness goal and become a great warrior!<html>");
             flag=1;
-        }
-        if ("academic".equals(Quest)){
+          }
+          if ("academic".equals(Quest))
+          {
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/academicCenter.png")));
             jLabeltext.setText("<html> Welcome the College of Wizardry and Science! Here you will learn from the greatest minds how to achieve academic success!<html>");
             flag=2;
-        }
-        if ("mind".equals(Quest)){
+          }
+          if ("mind".equals(Quest))
+          {
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mindCenter.png")));
-            jLabeltext.setText("<html> Welcome to the Arcane Order of the Mind! All the wisemen from our world gather here to seek peace and share their teachings.<html>");
+    
+           jLabeltext.setText("<html> Welcome to the Arcane Order of the Mind! All the wisemen from our world gather here to seek peace and share their teachings.<html>");
             flag=3;
-        }
+          }
+          }
+     public void setIcon()
+    {
+         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
+         
     }
- 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -197,10 +203,7 @@ public class TutorialForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 56, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabelName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,7 +215,7 @@ public class TutorialForm extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 370, 160, 30);
+        jPanel2.setBounds(0, 370, 160, 30);
         jPanel1.add(jLabelCharacterImage);
         jLabelCharacterImage.setBounds(30, 240, 120, 130);
 
@@ -244,7 +247,7 @@ public class TutorialForm extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanelMoney);
-        jPanelMoney.setBounds(50, 410, 80, 30);
+        jPanelMoney.setBounds(40, 410, 80, 30);
 
         jLabelCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Catalf.png"))); // NOI18N
         jPanel1.add(jLabelCat);
@@ -297,7 +300,8 @@ public class TutorialForm extends javax.swing.JFrame {
         // TODO add your handling code here:
          buttonPressedNo++;
        
-        if (buttonPressedNo==0){
+        if (buttonPressedNo==0)
+        {
             jLabeltext.setText("<html>Now i'm going to give you a quick guide for your great adventure! <html>");
             System.out.println(user);
             System.out.println(password);
@@ -305,7 +309,8 @@ public class TutorialForm extends javax.swing.JFrame {
             System.out.println(Class);
             System.out.println("0");
         }
-        if (buttonPressedNo==1){
+        if (buttonPressedNo==1)
+        {
             jLabeltext.setText("<html>Here you can see your character, your username and your points. <html>");
             
             if ("archer".equals(Class)){
@@ -332,7 +337,8 @@ public class TutorialForm extends javax.swing.JFrame {
                  jLabelMoney.setVisible(true);
                  jPanelMoney.setVisible(true);
             }
-                System.out.println("1");
+              
+                          System.out.println("1");
         }
         if (buttonPressedNo==2){
             jLabeltext.setText("<html>Over there you can see Catalf the Grey, he's our cat wizard, cat wizards have psychic powers.He can show you other heroes's adventures. <html>");  
@@ -344,29 +350,29 @@ public class TutorialForm extends javax.swing.JFrame {
             jLabeltext.setText("<html>You can summon him if you ever want to check out how other adventurers's quests are going! <html>");  
             System.out.println("3");
         }
-        if (buttonPressedNo==4){
+         if (buttonPressedNo==4){
             jLabeltext.setText("<html>You can spend the coins that you received for your hard work in the market! <html>");  
             jLabelMarketMan.setVisible(true);
             JbuttonMarket.setVisible(true);       
             System.out.println("4");
         }
-        if (buttonPressedNo==5){
+         if (buttonPressedNo==5){
             jLabeltext.setText("<html>Just press the big red button when you're ready for a new objetive! <html>");  
             //jButtonChallenge.setVisible(true);
             System.out.println("5");
         }
-        if (buttonPressedNo==6){
+          if (buttonPressedNo==6){
             jLabeltext.setText("<html>That's it! Are you ready to start your great adventure? <html>"); 
             jButtonContinue.setText("Let's start!");
             System.out.println("6");
         }
-        if(buttonPressedNo == 7){
-            gameplayForm gmf = new gameplayForm();
-            gmf.getUserInfo(user);
-            gmf.setVisible(true);
-            gmf.pack();
-            gmf.setLocationRelativeTo(null);
-            this.dispose();
+           if(buttonPressedNo == 7){
+                gameplayForm gmf = new gameplayForm();
+                gmf.passData(user);
+                gmf.setVisible(true);
+                gmf.pack();
+                gmf.setLocationRelativeTo(null);
+                this.dispose();
         }  
     }//GEN-LAST:event_jButtonContinueMouseClicked
 

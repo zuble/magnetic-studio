@@ -255,6 +255,7 @@ public class AdventureSelection extends javax.swing.JFrame {
         String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";       
         
         try {
+            
             ps = My_CNX.getConnection().prepareStatement(query);
             ps.setString(1, "fitness");
             ps.setString(2, username);
@@ -285,40 +286,57 @@ public class AdventureSelection extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonFitnessMouseClicked
 
     private void jButtonAcademicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAcademicMouseClicked
-        // TODO add your handling code here:
-        
-        PreparedStatement ps;
-        ResultSet rs;
-        String username = this.user;
-        
-        String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";      
-        
-        try {
-            ps = My_CNX.getConnection().prepareStatement(query);
-            ps.setString(1, "academic");
-            ps.setString(2, username);
-             if(ps.executeUpdate()!=0)
-                     {
-                         JOptionPane.showMessageDialog(null, "Quest selected!");                          
-                          
-                     }
-        } catch (SQLException ex) {
-            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         this.Quest= "academic";
-           buttonPressedNo ++;
-           
+        try {                                             
+            // TODO add your handling code here:
+            
+            PreparedStatement ps;
+            ResultSet rs;
+            String username = this.user;
+            
+            String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";
+            
+            try {
+                ps = My_CNX.getConnection().prepareStatement(query);
+                ps.setString(1, "academic");
+                ps.setString(2, username);
+                if((ps.executeUpdate())!=0)
+                {
+                    JOptionPane.showMessageDialog(null, "Quest selected!");
+                    
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            String query_2="SELECT * from`users` where `username` = ?";
+            
+            
+            ps = My_CNX.getConnection().prepareStatement(query_2);
+            ps.setString(1, username);
+            rs=ps.executeQuery();
+            //rs.next();
+            String rs1=rs.getString("Quest");
+            System.out.println("Quest is "+rs1);
+            
+            
+            this.Quest= "academic";
+            buttonPressedNo ++;
+            
             if (buttonPressedNo==2)
-        {
-            jLabeltext.setText("<html>Let's start! <html>");
-            jLabelSwordAndShield.setVisible(false);
-            jLabelBook.setVisible(true);
-            jLabelHeart.setVisible(false);
-            jButtonFitness.setVisible(false);
-            jButtonAcademic.setVisible(false);
-            jButtonMind.setVisible(false);
-            jButtonContinue.setVisible(true);
-
+            {
+                jLabeltext.setText("<html>Let's start! <html>");
+                jLabelSwordAndShield.setVisible(false);
+                jLabelBook.setVisible(true);
+                jLabelHeart.setVisible(false);
+                jButtonFitness.setVisible(false);
+                jButtonAcademic.setVisible(false);
+                jButtonMind.setVisible(false);
+                jButtonContinue.setVisible(true);
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AdventureSelection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonAcademicMouseClicked
 

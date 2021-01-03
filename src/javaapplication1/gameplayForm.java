@@ -3,12 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package javaapplication1;
+
 import java.awt.Image;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,112 +14,86 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.Timer;
-import java.awt.Color;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-
-
+import javax.swing.table.DefaultTableModel;
 /**
  *
- * @author Zublé
+ * @author Gustavo
  */
-
 public class gameplayForm extends javax.swing.JFrame {
-    private String user;
+   
+    public String user;
     private String Quest;
     private String Class;
-    private String Chall;
+    private String Chall_text;
+    private int Chall_id;
+    private int Chall_coins;
     private int flag;
     private int buttonPressedNo=0;
-    private int buttonCatNo=0;
-    private int minAca = 3 , maxAca = 5;
-    private int minMind = 1 , maxMind = 3;
-    private int minFit = 5 , maxFit = 7;
-    private int MIN , MAX ; 
-    private int rnumb;
-    
+    private int buttonCat1=0 , buttonCat2=0;
+  
     /**
      * Creates new form gameplayForm
      */
     public gameplayForm() {
         initComponents();
-        jButtonComplete.setVisible(false);
-        jButtonCancel.setVisible(false);
-        //jLabelChall.setBackground(new Color(0,0,0,50));
-        //jButtonChallenge.setVisible(false);
-        setIcon();       
     }
     
-    public void setIcon(){
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
-    }
+    public void wizardLabelsTimer(){  
+        Timer timer = new Timer(2000, new ActionListener() {public void actionPerformed(ActionEvent e) {
+            jLabelWizardBallon.setVisible(false);
+            jLabeltextWizardSpeach.setVisible(false);} });
+        timer.setRepeats(false);
+        timer.start();
+    }    
     
-    public int random(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
-    
-    //previamente era a passData
-    public void getUserInfo(String user) {
+    public void passData(String user) {
         this.user = user;
         PreparedStatement st;
         ResultSet rs;
+        
+        //GET USER INFO
         String queryClass = "SELECT * FROM `users` WHERE `username` = ? ";
-
         try {
             st = My_CNX.getConnection().prepareStatement(queryClass);
             st.setString(1, user);
             rs = st.executeQuery();
-
+            
             while(rs.next()){
                 this.Class = rs.getString("Class");
                 this.Quest = rs.getString("Quest");
                 jLabelMoney.setText(rs.getString("wallet"));
-                System.out.println(this.Class);
                 System.out.println(this.Quest);
+                System.out.println(this.Class);
             }
             } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }   
-    
+        }
+        
+        //SET BACKGROUND AND IMAGES
         if ("fitness".equals(Quest)){
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fitnessCenter.png")));
-            jLabeltext.setText("<html> Welcome back to the Fighters Guild!<html>");
+            jLabeltextWizardSpeach.setText("<html> Welcome back to the Fighters Guild!<html>");
+            wizardLabelsTimer();
             flag=1;
-            this.MIN = minFit;
-            this.MAX = maxFit;
-            ActionListener taskPerformer;
-            taskPerformer = (ActionEvent evt) -> {
-            jLabel3.setVisible(false);
-            jLabeltext.setVisible(false);};
-            new Timer(4000, taskPerformer).start();
-        }
-        if ("academic".equals(Quest)){
+          }
+          if ("academic".equals(Quest)){
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/academicCenter.png")));
-            jLabeltext.setText("<html> Welcome back to the College of Wizardry and Science! <html>");
+            jLabeltextWizardSpeach.setText("<html> Welcome back to the College of Wizardry and Science! <html>");
+            wizardLabelsTimer();
             flag=2;
-            this.MIN = minAca;
-            this.MAX = maxAca;
-            ActionListener taskPerformer;
-            taskPerformer = (ActionEvent evt) -> {
-            jLabel3.setVisible(false);
-            jLabeltext.setVisible(false);};
-            new Timer(4000, taskPerformer).start();
-        }
-        if ("mind".equals(Quest)){
+          }
+          if ("mind".equals(Quest)){
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mindCenter.png")));
-            jLabeltext.setText("<html> Welcome back to the Arcane Order of the Mind!<html>");
-            this.MIN = minMind;
-            this.MAX = maxMind;
+            jLabeltextWizardSpeach.setText("<html> Welcome back to the Arcane Order of the Mind!<html>");
+            wizardLabelsTimer();
             flag=3;
-            ActionListener taskPerformer;
-            taskPerformer = (ActionEvent evt) -> {
-            jLabel3.setVisible(false);
-            jLabeltext.setVisible(false);};
-            new Timer(4000, taskPerformer).start();
-        }
-
+          }
+          
         if ("archer".equals(Class)){
             jLabelCharacterImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/archer2.png")));
             jLabelName.setText(user+" the "+Class);
@@ -130,7 +101,7 @@ public class gameplayForm extends javax.swing.JFrame {
             jLabelCoin.setVisible(true);
             jLabelMoney.setVisible(true);
             jPanelMoney.setVisible(true);
-        }
+            }
         if ("fighter".equals(Class)){
             jLabelCharacterImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fighter2.png")));
             jLabelName.setText(user+" the "+Class);
@@ -147,7 +118,24 @@ public class gameplayForm extends javax.swing.JFrame {
             jLabelMoney.setVisible(true);
             jPanelMoney.setVisible(true);
         }
+        
+        //FILL RANK TABLE
+        jCatalfRankDisplayPane.setVisible(false);
+        String queryWalletRank = "SELECT * FROM `users` ORDER BY `wallet` DESC";
+            try {
+                st = My_CNX.getConnection().prepareStatement(queryWalletRank);   
+                rs = st.executeQuery();
+
+                while(rs.next()){
+                    String data[] = { rs.getString("username"), rs.getString("Quest") , rs.getString("wallet") };
+                    DefaultTableModel tb1Model = (DefaultTableModel)jUserRankTable.getModel();
+                    tb1Model.addRow(data);
+                }
+                } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -158,12 +146,12 @@ public class gameplayForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        jPanelMinCloseAll = new javax.swing.JPanel();
         CloseButton = new javax.swing.JLabel();
         MinimizeButton = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabeltext = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabeltextWizardSpeach = new javax.swing.JLabel();
+        jLabelWizardBallon = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabelName = new javax.swing.JLabel();
@@ -172,14 +160,15 @@ public class gameplayForm extends javax.swing.JFrame {
         jLabelCoin = new javax.swing.JLabel();
         jLabelMoney = new javax.swing.JLabel();
         jLabelCat = new javax.swing.JLabel();
-        jButtonChallenge = new javax.swing.JButton();
         jButtonCatalf = new javax.swing.JButton();
+        jCatalfRankDisplayPane = new javax.swing.JDesktopPane();
+        jUserRankTable = new javax.swing.JTable();
+        jLabelChall = new javax.swing.JLabel();
+        jButtonChallenge = new javax.swing.JButton();
         jLabelMarketMan = new javax.swing.JLabel();
-        jButtonCancel = new javax.swing.JButton();
-        jButtonComplete = new javax.swing.JButton();
-        jScrollChalls = new javax.swing.JScrollPane();
-        jListChall = new javax.swing.JList<>();
         JbuttonMarket = new javax.swing.JButton();
+        jButtonComplete = new javax.swing.JButton();
+        jButtonReturn = new javax.swing.JButton();
         Background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -188,8 +177,8 @@ public class gameplayForm extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
-        jPanel3.setBackground(new java.awt.Color(153, 102, 0));
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelMinCloseAll.setBackground(new java.awt.Color(153, 102, 0));
+        jPanelMinCloseAll.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         CloseButton.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         CloseButton.setText("X");
@@ -209,40 +198,40 @@ public class gameplayForm extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelMinCloseAllLayout = new javax.swing.GroupLayout(jPanelMinCloseAll);
+        jPanelMinCloseAll.setLayout(jPanelMinCloseAllLayout);
+        jPanelMinCloseAllLayout.setHorizontalGroup(
+            jPanelMinCloseAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMinCloseAllLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(MinimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        jPanelMinCloseAllLayout.setVerticalGroup(
+            jPanelMinCloseAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMinCloseAllLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelMinCloseAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(MinimizeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CloseButton, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
-        jPanel1.add(jPanel3);
-        jPanel3.setBounds(640, 0, 60, 30);
+        jPanel1.add(jPanelMinCloseAll);
+        jPanelMinCloseAll.setBounds(640, 0, 60, 30);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wizard2.png"))); // NOI18N
         jPanel1.add(jLabel2);
         jLabel2.setBounds(20, 20, 120, 130);
 
-        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 16)); // NOI18N
-        jPanel1.add(jLabeltext);
-        jLabeltext.setBounds(200, 30, 280, 80);
+        jLabeltextWizardSpeach.setFont(new java.awt.Font("Book Antiqua", 1, 16)); // NOI18N
+        jPanel1.add(jLabeltextWizardSpeach);
+        jLabeltextWizardSpeach.setBounds(200, 30, 280, 80);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/balloon3.png"))); // NOI18N
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(160, 10, 350, 130);
+        jLabelWizardBallon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/balloon3.png"))); // NOI18N
+        jPanel1.add(jLabelWizardBallon);
+        jLabelWizardBallon.setBounds(160, 10, 350, 140);
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -295,7 +284,6 @@ public class gameplayForm extends javax.swing.JFrame {
         jLabelMoney.setBackground(new java.awt.Color(255, 204, 51));
         jLabelMoney.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
         jLabelMoney.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelMoney.setText("0");
 
         javax.swing.GroupLayout jPanelMoneyLayout = new javax.swing.GroupLayout(jPanelMoney);
         jPanelMoney.setLayout(jPanelMoneyLayout);
@@ -319,19 +307,7 @@ public class gameplayForm extends javax.swing.JFrame {
 
         jLabelCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Catalf.png"))); // NOI18N
         jPanel1.add(jLabelCat);
-        jLabelCat.setBounds(520, 80, 170, 150);
-
-        jButtonChallenge.setBackground(new java.awt.Color(255, 0, 0));
-        jButtonChallenge.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
-        jButtonChallenge.setText("Set new challenges");
-        jButtonChallenge.setBorder(new javax.swing.border.MatteBorder(null));
-        jButtonChallenge.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonChallengeMouseClicked(evt);
-            }
-        });
-        jPanel1.add(jButtonChallenge);
-        jButtonChallenge.setBounds(180, 170, 300, 30);
+        jLabelCat.setBounds(530, 80, 170, 150);
 
         jButtonCatalf.setBackground(new java.awt.Color(255, 255, 255));
         jButtonCatalf.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
@@ -343,50 +319,91 @@ public class gameplayForm extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButtonCatalf);
-        jButtonCatalf.setBounds(520, 240, 160, 30);
+        jButtonCatalf.setBounds(530, 240, 160, 30);
+
+        jUserRankTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Username", "Quest", "Coins"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+
+        jCatalfRankDisplayPane.setLayer(jUserRankTable, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jCatalfRankDisplayPaneLayout = new javax.swing.GroupLayout(jCatalfRankDisplayPane);
+        jCatalfRankDisplayPane.setLayout(jCatalfRankDisplayPaneLayout);
+        jCatalfRankDisplayPaneLayout.setHorizontalGroup(
+            jCatalfRankDisplayPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jUserRankTable, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+        );
+        jCatalfRankDisplayPaneLayout.setVerticalGroup(
+            jCatalfRankDisplayPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jUserRankTable, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jCatalfRankDisplayPane);
+        jCatalfRankDisplayPane.setBounds(190, 150, 307, 327);
+
+        jLabelChall.setForeground(new java.awt.Color(255, 51, 51));
+        jLabelChall.setToolTipText("");
+        jPanel1.add(jLabelChall);
+        jLabelChall.setBounds(210, 200, 270, 100);
+
+        jButtonChallenge.setBackground(new java.awt.Color(255, 0, 0));
+        jButtonChallenge.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
+        jButtonChallenge.setText("New challenge");
+        jButtonChallenge.setBorder(new javax.swing.border.MatteBorder(null));
+        jButtonChallenge.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonChallengeMouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButtonChallenge);
+        jButtonChallenge.setBounds(210, 170, 270, 30);
 
         jLabelMarketMan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/market.png"))); // NOI18N
         jPanel1.add(jLabelMarketMan);
-        jLabelMarketMan.setBounds(560, 280, 90, 160);
-
-        jButtonCancel.setBackground(new java.awt.Color(255, 0, 0));
-        jButtonCancel.setFont(new java.awt.Font("Book Antiqua", 1, 8)); // NOI18N
-        jButtonCancel.setText("Cancel");
-        jButtonCancel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonCancelMouseClicked(evt);
-            }
-        });
-        jPanel1.add(jButtonCancel);
-        jButtonCancel.setBounds(330, 280, 70, 20);
-
-        jButtonComplete.setBackground(new java.awt.Color(0, 204, 0));
-        jButtonComplete.setFont(new java.awt.Font("Book Antiqua", 1, 8)); // NOI18N
-        jButtonComplete.setText("Complete!");
-        jButtonComplete.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonCompleteMouseClicked(evt);
-            }
-        });
-        jPanel1.add(jButtonComplete);
-        jButtonComplete.setBounds(240, 280, 80, 20);
-
-        jScrollChalls.setViewportView(jListChall);
-
-        jPanel1.add(jScrollChalls);
-        jScrollChalls.setBounds(180, 200, 300, 80);
+        jLabelMarketMan.setBounds(570, 280, 90, 160);
 
         JbuttonMarket.setBackground(new java.awt.Color(255, 255, 255));
         JbuttonMarket.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
         JbuttonMarket.setText("Market");
         JbuttonMarket.setBorder(new javax.swing.border.MatteBorder(null));
         jPanel1.add(JbuttonMarket);
-        JbuttonMarket.setBounds(550, 450, 110, 21);
+        JbuttonMarket.setBounds(530, 441, 160, 30);
 
-        Background.setBackground(new java.awt.Color(0, 0, 0));
+        jButtonComplete.setText("Complete");
+        jButtonComplete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCompleteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonComplete);
+        jButtonComplete.setBounds(280, 310, 110, 25);
+
+        jButtonReturn.setText("Return");
+        jButtonReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReturnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonReturn);
+        jButtonReturn.setBounds(380, 450, 66, 25);
+
+        Background.setBackground(new java.awt.Color(255, 255, 51));
         Background.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         jPanel1.add(Background);
-        Background.setBounds(0, 0, 700, 500);
+        Background.setBounds(0, 0, 710, 500);
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 500));
 
@@ -398,88 +415,91 @@ public class gameplayForm extends javax.swing.JFrame {
     }//GEN-LAST:event_CloseButtonMouseClicked
 
     private void MinimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MinimizeButtonMouseClicked
-        // TODO add your handling code here:
         this.setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_MinimizeButtonMouseClicked
 
+    private void jButtonCatalfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCatalfMouseClicked
+               
+        if( buttonCat1 == 0 ){
+            jCatalfRankDisplayPane.setVisible(true);
+            buttonCat1 = 1;
+        }
+        else if( buttonCat1 == 1 ){
+            jCatalfRankDisplayPane.setVisible(false);
+            buttonCat1 = 0;
+        }
+    }//GEN-LAST:event_jButtonCatalfMouseClicked
+
     private void jButtonChallengeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonChallengeMouseClicked
-       
         PreparedStatement st;
         ResultSet rs;
-        DefaultListModel model = new DefaultListModel();
-        JList list = new JList(model);
-        this.rnumb = random(MIN,MAX);
-        
-        String queryChall2= "SELECT * FROM `challenge` WHERE `chall_quest`= ? AND `chall_id` NOT IN ( SELECT `chall_id` FROM `backpack_chall` where `usr` = ? )";
-        
+
+        String queryChall = "SELECT * FROM `challenge` WHERE `chall_quest` = ? AND `chall_id` NOT IN "
+                            + "(SELECT `chall_id` FROM `backpack_chall` where `usr`= ? ) ORDER BY RAND() LIMIT 1";
         try {
-            st = My_CNX.getConnection().prepareStatement(queryChall2);
+            st = My_CNX.getConnection().prepareStatement(queryChall);   
             st.setString(1, Quest);
             st.setString(2, user);
             rs = st.executeQuery();
            
             while(rs.next()){
-                jListChall.setVisible(true);
-                this.Chall = rs.getString("chall_text");
-                //jPanelChall.setVisible(true);
-                //jLabelChall.setText(Chall);
-                model.addElement(rs.getString("chall_text"));
-                jButtonCancel.setVisible(true);
-                jButtonComplete.setVisible(true);
-                jButtonChallenge.setVisible(false);
-                
-                System.out.println(rs.getString("chall_text"));
+                this.Chall_text = rs.getString("chall_text");
+                this.Chall_id = rs.getInt("chall_id");
+                this.Chall_coins = rs.getInt("coins");
+                jLabelChall.setText(Chall_text);
+                System.out.println(this.Chall_text + this.Chall_id);
             }
-        } catch (SQLException ex) {
+            } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonChallengeMouseClicked
 
-    private void jButtonCatalfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCatalfMouseClicked
- 
-        PreparedStatement st;
-        ResultSet rs;
-        String queryChall = "SELECT * FROM `users` ORDER BY `wallet` DESC ";
-
-        try {
-            st = My_CNX.getConnection().prepareStatement(queryChall);
-            rs = st.executeQuery();
-
-            while(rs.next()){
-                System.out.println(rs.getString("username") + rs.getString("wallet"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButtonCatalfMouseClicked
-
-    private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
+    private void jButtonCompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompleteActionPerformed
         // TODO add your handling code here:
-        jButtonComplete.setVisible(false);
-        jButtonChallenge.setVisible(true);
-        jButtonCancel.setVisible(false);
-
-    }//GEN-LAST:event_jButtonCancelMouseClicked
-
-    private void jButtonCompleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCompleteMouseClicked
-        //adicionar as coins correspondentes á chall na wallet
         PreparedStatement st;
         ResultSet rs;
         
-        String queryChall = "INSERT INTO `backpack_chall`(`usr`, `chall_id`) VALUES (?,?)";
-
+        //UPDATE USER WALLET
+        String pointQuery = "UPDATE `users` SET `wallet`=`wallet` + ? WHERE `username` = ? ";
         try {
-            st = My_CNX.getConnection().prepareStatement(queryChall);
-            st.setString(1,user);
-            st.setInt(2,rnumb);
-            rs = st.executeQuery();
-
-           
-        } catch (SQLException ex) {
+            st = My_CNX.getConnection().prepareStatement(pointQuery);
+            st.setInt(1,Chall_coins);
+            st.setString(2,user);
+            st.executeUpdate();
+            } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-    }//GEN-LAST:event_jButtonCompleteMouseClicked
-   
+        }
+        
+        //UPDATE WALLET DISPLAY
+        String returnWallet = "SELECT `wallet` FROM `users` WHERE `username` = ? ";
+        try {
+            st = My_CNX.getConnection().prepareStatement(returnWallet);
+            st.setString(1,user);
+            rs = st.executeQuery();
+            rs.next();
+            jLabelMoney.setText(rs.getString(1));
+            jLabelChall.setText(" ");
+            } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //INSERT COMPLETED CHALL INTO BACKPACK_CHALL
+        String updateBackpack_chall = "INSERT INTO `backpack_chall`(`usr`,`chall_id`) VALUES (?,?)";
+         try {
+            st = My_CNX.getConnection().prepareStatement(updateBackpack_chall);
+            st.setString(1,user);
+            st.setInt(2,Chall_id);
+            st.executeUpdate();
+            } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonCompleteActionPerformed
+
+    /* ADD RETURN STUFF */
+    private void jButtonReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReturnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonReturnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -520,27 +540,26 @@ public class gameplayForm extends javax.swing.JFrame {
     private javax.swing.JLabel CloseButton;
     private javax.swing.JButton JbuttonMarket;
     private javax.swing.JLabel MinimizeButton;
-    private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonCatalf;
-    private javax.swing.JButton jButtonChallenge;
+    public javax.swing.JButton jButtonChallenge;
     private javax.swing.JButton jButtonComplete;
+    private javax.swing.JButton jButtonReturn;
+    private javax.swing.JDesktopPane jCatalfRankDisplayPane;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelCat;
+    private javax.swing.JLabel jLabelChall;
     private javax.swing.JLabel jLabelCharacterImage;
     private javax.swing.JLabel jLabelCoin;
     private javax.swing.JLabel jLabelMarketMan;
     private javax.swing.JLabel jLabelMoney;
     private javax.swing.JLabel jLabelName;
-    private javax.swing.JLabel jLabeltext;
-    private javax.swing.JList<String> jListChall;
+    private javax.swing.JLabel jLabelWizardBallon;
+    private javax.swing.JLabel jLabeltextWizardSpeach;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanelMinCloseAll;
     private javax.swing.JPanel jPanelMoney;
-    private javax.swing.JScrollPane jScrollChalls;
+    private javax.swing.JTable jUserRankTable;
     // End of variables declaration//GEN-END:variables
-
-   
 }

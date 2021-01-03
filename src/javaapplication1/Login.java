@@ -29,14 +29,13 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    public Login(){
+    public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
         setIcon();
     }
-    
-    public void setIcon(){
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
+     public void setIcon(){
+         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
     }
      
     public void passData(String user) {
@@ -203,7 +202,7 @@ public class Login extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         jButton1.setText("Cancel");
         jPanel1.add(jButton1);
-        jButton1.setBounds(290, 230, 71, 25);
+        jButton1.setBounds(290, 230, 73, 26);
 
         jButton_Login.setBackground(new java.awt.Color(102, 102, 255));
         jButton_Login.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
@@ -214,7 +213,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton_Login);
-        jButton_Login.setBounds(200, 230, 63, 25);
+        jButton_Login.setBounds(200, 230, 65, 26);
 
         JLabelRegister.setForeground(new java.awt.Color(255, 255, 255));
         JLabelRegister.setText("Create new account");
@@ -225,7 +224,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(JLabelRegister);
-        JLabelRegister.setBounds(200, 270, 150, 14);
+        JLabelRegister.setBounds(200, 270, 150, 15);
 
         usernameText.setBackground(new java.awt.Color(204, 255, 204));
         usernameText.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
@@ -239,7 +238,7 @@ public class Login extends javax.swing.JFrame {
 
         jTextField1.setText("jTextField1");
         jPanel1.add(jTextField1);
-        jTextField1.setBounds(200, 60, 60, 20);
+        jTextField1.setBounds(200, 60, 56, 19);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -274,7 +273,6 @@ public class Login extends javax.swing.JFrame {
         String username = usernameText.getText();
         String password = String.valueOf(jPasswordField.getPassword());
         
-       
         String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
        
         try {
@@ -285,9 +283,9 @@ public class Login extends javax.swing.JFrame {
             rs = st.executeQuery();
             
             if (rs.next()){
-                this.user = username;
+                this.user =username;
                 gameplayForm gmf = new gameplayForm();
-                gmf.getUserInfo(username);
+                gmf.passData(username);
                 gmf.setVisible(true);
                 gmf.pack();
                 gmf.setLocationRelativeTo(null);
@@ -295,7 +293,7 @@ public class Login extends javax.swing.JFrame {
             }
             else{
              JOptionPane.showMessageDialog(null, "Invalid Username / Password", "Login Error",2);
-            }
+            }  
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -312,13 +310,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_JLabelRegisterMouseClicked
 
     private void jPasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldKeyPressed
-        // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             PreparedStatement st;
             ResultSet rs;
             String username = usernameText.getText();
             String password = String.valueOf(jPasswordField.getPassword());
-
 
             String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
 
@@ -330,9 +326,9 @@ public class Login extends javax.swing.JFrame {
                 rs = st.executeQuery();
 
                 if (rs.next()){
-                    this.user = username;
+                    this.user =username;
                     gameplayForm gmf = new gameplayForm();
-                    gmf.getUserInfo(username);
+                    gmf.passData(username);
                     gmf.setVisible(true);
                     gmf.pack();
                     gmf.setLocationRelativeTo(null);
@@ -340,22 +336,20 @@ public class Login extends javax.swing.JFrame {
                 }
                 else{
                  JOptionPane.showMessageDialog(null, "Invalid Username / Password", "Login Error",2);
-                }
+                }  
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jPasswordFieldKeyPressed
-/*
-    public String getUser()
-    {
+
+    public String getUser(){
         return user;
     }
-     public String getPassword()
-    {
+     public String getPassword(){
         return password;
     }
-*/
+
     /**
      * @param args the command line arguments
      */
