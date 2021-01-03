@@ -266,7 +266,6 @@ public class Login extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_CloseButtonMouseClicked
 
-    
     private void jButton_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoginActionPerformed
         // TODO add your handling code here:
         PreparedStatement st;
@@ -286,7 +285,7 @@ public class Login extends javax.swing.JFrame {
             if (rs.next()){
                 this.user =username;
                 gameplayForm gmf = new gameplayForm();
-                gmf.passData(username);
+                gmf.passData(username,true);
                 gmf.setVisible(true);
                 gmf.pack();
                 gmf.setLocationRelativeTo(null);
@@ -329,7 +328,7 @@ public class Login extends javax.swing.JFrame {
                 if (rs.next()){
                     this.user =username;
                     gameplayForm gmf = new gameplayForm();
-                    gmf.passData(username);
+                    gmf.passData(username,true);
                     gmf.setVisible(true);
                     gmf.pack();
                     gmf.setLocationRelativeTo(null);

@@ -7,9 +7,6 @@ package javaapplication1;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -43,38 +40,30 @@ public class TutorialForm extends javax.swing.JFrame {
         jLabelMarketMan.setVisible(false);
         JbuttonMarket.setVisible(false);
         jButtonCatalf.setVisible(false);
-        
-        // NOI18N
     }
     public void passData(String user, String Quest, String Class) {
         this.user = user;
         this.Quest = Quest;
         this.Class = Class;
       
-          if ("fitness".equals(Quest))
-          {
+        if ("fitness".equals(Quest)){
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fitnessCenter.png")));
             jLabeltext.setText("<html> Welcome to the Fighters Guild! Here you will be trained to achieve your fitness goal and become a great warrior!<html>");
             flag=1;
-          }
-          if ("academic".equals(Quest))
-          {
+        }
+        if ("academic".equals(Quest)){
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/academicCenter.png")));
             jLabeltext.setText("<html> Welcome the College of Wizardry and Science! Here you will learn from the greatest minds how to achieve academic success!<html>");
             flag=2;
-          }
-          if ("mind".equals(Quest))
-          {
+        }
+        if ("mind".equals(Quest)){
             Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mindCenter.png")));
-    
-           jLabeltext.setText("<html> Welcome to the Arcane Order of the Mind! All the wisemen from our world gather here to seek peace and share their teachings.<html>");
+            jLabeltext.setText("<html> Welcome to the Arcane Order of the Mind! All the wisemen from our world gather here to seek peace and share their teachings.<html>");
             flag=3;
-          }
-          }
-     public void setIcon()
-    {
-         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
-         
+        }
+    }
+    public void setIcon(){
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png"))); 
     }
 
     /**
@@ -371,11 +360,7 @@ public class TutorialForm extends javax.swing.JFrame {
         }
            if(buttonPressedNo == 7){
                 gameplayForm gmf = new gameplayForm();
-             try {
-                 gmf.passData(user);
-             } catch (SQLException ex) {
-                 Logger.getLogger(TutorialForm.class.getName()).log(Level.SEVERE, null, ex);
-             }
+                gmf.passData(user,false);
                 gmf.setVisible(true);
                 gmf.pack();
                 gmf.setLocationRelativeTo(null);
