@@ -277,7 +277,7 @@ public class gameplayForm extends javax.swing.JFrame {
         jPanel1.add(WizardBallonWelcome);
         WizardBallonWelcome.setBounds(150, 0, 360, 140);
 
-        WizardSpeachChall.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        WizardSpeachChall.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
         jPanel1.add(WizardSpeachChall);
         WizardSpeachChall.setBounds(200, 150, 280, 170);
 
@@ -450,10 +450,10 @@ public class gameplayForm extends javax.swing.JFrame {
                 .addGroup(jCatalfRankDisplayPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jCatalfRankDisplayPaneLayout.createSequentialGroup()
                         .addComponent(jLabelFitnessRank, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(78, 78, 78))
+                        .addGap(80, 80, 80))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jCatalfRankDisplayPaneLayout.createSequentialGroup()
                         .addComponent(jLabelMindRank, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89))))
+                        .addGap(92, 92, 92))))
         );
         jCatalfRankDisplayPaneLayout.setVerticalGroup(
             jCatalfRankDisplayPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,20 +461,20 @@ public class gameplayForm extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabelAcademicRank)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jAcademicRank, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
+                .addComponent(jAcademicRank, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelFitnessRank)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jFitnessRank, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jFitnessRank, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelMindRank)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jMindRank, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jMindRank, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jPanel1.add(jCatalfRankDisplayPane);
-        jCatalfRankDisplayPane.setBounds(190, 130, 307, 348);
+        jCatalfRankDisplayPane.setBounds(190, 60, 307, 410);
 
         jButtonChallenge.setBackground(new java.awt.Color(255, 0, 0));
         jButtonChallenge.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
@@ -544,10 +544,14 @@ public class gameplayForm extends javax.swing.JFrame {
                
         if( buttonCat1 == 0 ){
             jCatalfRankDisplayPane.setVisible(true);
+            WizardBallonChall.setVisible(false);
+            WizardSpeachChall.setVisible(false);
             buttonCat1 = 1;
         }
         else if( buttonCat1 == 1 ){
             jCatalfRankDisplayPane.setVisible(false);
+            WizardBallonChall.setVisible(true);
+            WizardSpeachChall.setVisible(true);
             buttonCat1 = 0;
         }
     }//GEN-LAST:event_jButtonCatalfMouseClicked
