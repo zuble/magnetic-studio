@@ -32,14 +32,13 @@ public class TutorialForm extends javax.swing.JFrame {
     public TutorialForm() {
         initComponents();
         setIcon(); 
-        jPanel2.setVisible(false);
-        jLabelCoin.setVisible(false);
-        jLabelMoney.setVisible(false);
-        jPanelMoney.setVisible(false);
-        jLabelCat.setVisible(false);
-        jLabelMarketMan.setVisible(false);
-        JbuttonMarket.setVisible(false);
-        jButtonCatalf.setVisible(false);
+        JUserButton.setVisible(false);
+        UserInfoPanel.setVisible(false);
+        jUserImg.setVisible(false);
+        jCatImg.setVisible(false);
+        jWizRideImg.setVisible(false);
+        JWizHouseButton.setVisible(false); 
+        jCatalfButton.setVisible(false);
     }
     public void passData(String user, String Quest, String Class) {
         this.user = user;
@@ -83,17 +82,17 @@ public class TutorialForm extends javax.swing.JFrame {
         jLabeltext = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButtonContinue = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabelName = new javax.swing.JLabel();
-        jLabelCharacterImage = new javax.swing.JLabel();
-        jPanelMoney = new javax.swing.JPanel();
+        jUserImg = new javax.swing.JLabel();
+        JUserButton = new javax.swing.JButton();
+        UserInfoPanel = new javax.swing.JPanel();
+        jLabelMush = new javax.swing.JLabel();
+        jLabelExp = new javax.swing.JLabel();
         jLabelCoin = new javax.swing.JLabel();
         jLabelMoney = new javax.swing.JLabel();
-        jLabelCat = new javax.swing.JLabel();
-        jButtonCatalf = new javax.swing.JButton();
-        jLabelMarketMan = new javax.swing.JLabel();
-        JbuttonMarket = new javax.swing.JButton();
+        jCatalfButton = new javax.swing.JButton();
+        jCatImg = new javax.swing.JLabel();
+        JWizHouseButton = new javax.swing.JButton();
+        jWizRideImg = new javax.swing.JLabel();
         Background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -150,7 +149,7 @@ public class TutorialForm extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(20, 20, 120, 130);
 
-        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 16)); // NOI18N
+        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         jPanel1.add(jLabeltext);
         jLabeltext.setBounds(200, 30, 280, 80);
 
@@ -159,7 +158,7 @@ public class TutorialForm extends javax.swing.JFrame {
         jLabel3.setBounds(160, 10, 370, 130);
 
         jButtonContinue.setBackground(new java.awt.Color(255, 255, 255));
-        jButtonContinue.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        jButtonContinue.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
         jButtonContinue.setText("Continue");
         jButtonContinue.setBorder(new javax.swing.border.MatteBorder(null));
         jButtonContinue.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -170,103 +169,91 @@ public class TutorialForm extends javax.swing.JFrame {
         });
         jPanel1.add(jButtonContinue);
         jButtonContinue.setBounds(220, 413, 220, 30);
+        jPanel1.add(jUserImg);
+        jUserImg.setBounds(30, 280, 120, 130);
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        JUserButton.setBackground(new java.awt.Color(247, 193, 82));
+        JUserButton.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
+        JUserButton.setForeground(new java.awt.Color(255, 255, 255));
+        JUserButton.setBorder(new javax.swing.border.MatteBorder(null));
+        jPanel1.add(JUserButton);
+        JUserButton.setBounds(10, 410, 140, 30);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 67, Short.MAX_VALUE)
-        );
+        UserInfoPanel.setBackground(new java.awt.Color(255, 255, 204));
+        UserInfoPanel.setBorder(new javax.swing.border.MatteBorder(null));
+        UserInfoPanel.setOpaque(false);
 
-        jLabelName.setFont(new java.awt.Font("Book Antiqua", 1, 16)); // NOI18N
-        jLabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelMush.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage1.png"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 56, Short.MAX_VALUE))
-            .addComponent(jLabelName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 370, 160, 30);
-        jPanel1.add(jLabelCharacterImage);
-        jLabelCharacterImage.setBounds(30, 240, 120, 130);
-
-        jPanelMoney.setBackground(new java.awt.Color(255, 255, 204));
-        jPanelMoney.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jLabelExp.setBackground(new java.awt.Color(255, 204, 51));
+        jLabelExp.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
+        jLabelExp.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelExp.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         jLabelCoin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/coin.png"))); // NOI18N
 
         jLabelMoney.setBackground(new java.awt.Color(255, 204, 51));
         jLabelMoney.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
-        jLabelMoney.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelMoney.setText("0");
+        jLabelMoney.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelMoney.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
-        javax.swing.GroupLayout jPanelMoneyLayout = new javax.swing.GroupLayout(jPanelMoney);
-        jPanelMoney.setLayout(jPanelMoneyLayout);
-        jPanelMoneyLayout.setHorizontalGroup(
-            jPanelMoneyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMoneyLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout UserInfoPanelLayout = new javax.swing.GroupLayout(UserInfoPanel);
+        UserInfoPanel.setLayout(UserInfoPanelLayout);
+        UserInfoPanelLayout.setHorizontalGroup(
+            UserInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UserInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelCoin, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelCoin, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelExp, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelMush)
                 .addGap(40, 40, 40))
         );
-        jPanelMoneyLayout.setVerticalGroup(
-            jPanelMoneyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelMoney, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-            .addComponent(jLabelCoin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        UserInfoPanelLayout.setVerticalGroup(
+            UserInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelMush, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(UserInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(UserInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelCoin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(jLabelMoney, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelExp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        jPanel1.add(jPanelMoney);
-        jPanelMoney.setBounds(40, 410, 80, 30);
+        jPanel1.add(UserInfoPanel);
+        UserInfoPanel.setBounds(10, 440, 140, 40);
 
-        jLabelCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Catalf.png"))); // NOI18N
-        jPanel1.add(jLabelCat);
-        jLabelCat.setBounds(520, 80, 170, 150);
+        jCatalfButton.setBackground(new java.awt.Color(204, 102, 255));
+        jCatalfButton.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
+        jCatalfButton.setForeground(new java.awt.Color(255, 255, 255));
+        jCatalfButton.setText("Catalf the Grey");
+        jCatalfButton.setBorder(new javax.swing.border.MatteBorder(null));
+        jPanel1.add(jCatalfButton);
+        jCatalfButton.setBounds(530, 170, 160, 30);
 
-        jButtonCatalf.setBackground(new java.awt.Color(255, 255, 255));
-        jButtonCatalf.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
-        jButtonCatalf.setText("Catalf the Grey");
-        jButtonCatalf.setBorder(new javax.swing.border.MatteBorder(null));
-        jButtonCatalf.addMouseListener(new java.awt.event.MouseAdapter() {
+        jCatImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Catalf.png"))); // NOI18N
+        jPanel1.add(jCatImg);
+        jCatImg.setBounds(550, 40, 130, 130);
+
+        JWizHouseButton.setBackground(new java.awt.Color(170, 63, 7));
+        JWizHouseButton.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
+        JWizHouseButton.setForeground(new java.awt.Color(255, 255, 255));
+        JWizHouseButton.setText("Wizard House");
+        JWizHouseButton.setBorder(new javax.swing.border.MatteBorder(null));
+        JWizHouseButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonCatalfMouseClicked(evt);
+                JWizHouseButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(jButtonCatalf);
-        jButtonCatalf.setBounds(520, 240, 160, 30);
+        jPanel1.add(JWizHouseButton);
+        JWizHouseButton.setBounds(530, 410, 160, 30);
 
-        jLabelMarketMan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/market.png"))); // NOI18N
-        jPanel1.add(jLabelMarketMan);
-        jLabelMarketMan.setBounds(560, 280, 90, 160);
-
-        JbuttonMarket.setBackground(new java.awt.Color(255, 255, 255));
-        JbuttonMarket.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
-        JbuttonMarket.setText("Market");
-        JbuttonMarket.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel1.add(JbuttonMarket);
-        JbuttonMarket.setBounds(550, 450, 110, 21);
+        jWizRideImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/dragon.png"))); // NOI18N
+        jPanel1.add(jWizRideImg);
+        jWizRideImg.setBounds(550, 260, 130, 160);
 
         Background.setBackground(new java.awt.Color(255, 255, 51));
         Background.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
@@ -276,6 +263,7 @@ public class TutorialForm extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 500));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void CloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonMouseClicked
@@ -290,10 +278,9 @@ public class TutorialForm extends javax.swing.JFrame {
 
     private void jButtonContinueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinueMouseClicked
         // TODO add your handling code here:
-         buttonPressedNo++;
+        buttonPressedNo++;
        
-        if (buttonPressedNo==0)
-        {
+        if (buttonPressedNo==0){
             jLabeltext.setText("<html>Now i'm going to give you a quick guide for your great adventure! <html>");
             System.out.println(user);
             System.out.println(password);
@@ -301,78 +288,67 @@ public class TutorialForm extends javax.swing.JFrame {
             System.out.println(Class);
             System.out.println("0");
         }
-        if (buttonPressedNo==1)
-        {
+        if (buttonPressedNo==1){
             jLabeltext.setText("<html>Here you can see your character, your username and your points. <html>");
             
             if ("archer".equals(Class)){
-                 jLabelCharacterImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/archer2.png")));
-                 jLabelName.setText(user+" the "+Class);
-                 jPanel2.setVisible(true);
-                 jLabelCoin.setVisible(true);
-                 jLabelMoney.setVisible(true);
-                 jPanelMoney.setVisible(true);
+                jUserImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/archer2.png")));
+                JUserButton.setText(user+" the "+Class);
             }
             if ("fighter".equals(Class)){
-                 jLabelCharacterImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fighter2.png")));
-                 jLabelName.setText(user+" the "+Class);
-                 jPanel2.setVisible(true);
-                 jLabelCoin.setVisible(true);
-                 jLabelMoney.setVisible(true);
-                 jPanelMoney.setVisible(true);
+                jUserImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fighter2.png")));
+                JUserButton.setText(user+" the "+Class);  
             }
             if ("healer".equals(Class)){
-                 jLabelCharacterImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/healer2.png")));
-                 jLabelName.setText(user+" the "+Class);
-                 jPanel2.setVisible(true);
-                 jLabelCoin.setVisible(true);
-                 jLabelMoney.setVisible(true);
-                 jPanelMoney.setVisible(true);
+                jUserImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/healer2.png")));
+                JUserButton.setText(user+" the "+Class);
             }
-              
-                          System.out.println("1");
+            JUserButton.setVisible(true);
+            UserInfoPanel.setVisible(true);
+            jUserImg.setVisible(true);
+            System.out.println("1");
         }
         if (buttonPressedNo==2){
             jLabeltext.setText("<html>Over there you can see Catalf the Grey, he's our cat wizard, cat wizards have psychic powers.He can show you other heroes's adventures. <html>");  
-            jButtonCatalf.setVisible(true);
-            jLabelCat.setVisible(true);
+            jCatalfButton.setVisible(true);
+            jCatImg.setVisible(true);
             System.out.println("2");
         }
         if (buttonPressedNo==3){
             jLabeltext.setText("<html>You can summon him if you ever want to check out how other adventurers's quests are going! <html>");  
             System.out.println("3");
         }
-         if (buttonPressedNo==4){
+        if (buttonPressedNo==4){
             jLabeltext.setText("<html>You can spend the coins that you received for your hard work in the market! <html>");  
-            jLabelMarketMan.setVisible(true);
-            JbuttonMarket.setVisible(true);       
+            jWizRideImg.setVisible(true);
+            JWizHouseButton.setVisible(true);       
             System.out.println("4");
         }
-         if (buttonPressedNo==5){
+        if (buttonPressedNo==5){
             jLabeltext.setText("<html>Just press the big red button when you're ready for a new objetive! <html>");  
-            //jButtonChallenge.setVisible(true);
             System.out.println("5");
         }
-          if (buttonPressedNo==6){
+        if (buttonPressedNo==6){
             jLabeltext.setText("<html>That's it! Are you ready to start your great adventure? <html>"); 
             jButtonContinue.setText("Let's start!");
             System.out.println("6");
         }
-           if(buttonPressedNo == 7){
-                gameplayForm gmf = new gameplayForm();
-                gmf.passData(user,false);
-                gmf.setVisible(true);
-                gmf.pack();
-                gmf.setLocationRelativeTo(null);
-                this.dispose();
+        if(buttonPressedNo == 7){
+            GameplayUserHomeForm gmf = new GameplayUserHomeForm();
+            gmf.passData(user,"register");
+            gmf.setVisible(true);
+            gmf.pack();
+            gmf.setLocationRelativeTo(null);
+            this.dispose();
         }  
     }//GEN-LAST:event_jButtonContinueMouseClicked
 
-    private void jButtonCatalfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCatalfMouseClicked
-        // TODO add your handling code here:
-       
-         
-    }//GEN-LAST:event_jButtonCatalfMouseClicked
+    private void JWizHouseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JWizHouseButtonMouseClicked
+        GameplayWizardHomeForm WizHomeTravel = new GameplayWizardHomeForm();
+        WizHomeTravel.passData(this.user);
+        WizHomeTravel.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_JWizHouseButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -412,23 +388,23 @@ public class TutorialForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Background;
     private javax.swing.JLabel CloseButton;
-    private javax.swing.JButton JbuttonMarket;
+    private javax.swing.JButton JUserButton;
+    private javax.swing.JButton JWizHouseButton;
     private javax.swing.JLabel MinimizeButton;
-    private javax.swing.JButton jButtonCatalf;
+    private javax.swing.JPanel UserInfoPanel;
     private javax.swing.JButton jButtonContinue;
+    private javax.swing.JLabel jCatImg;
+    private javax.swing.JButton jCatalfButton;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabelCat;
-    private javax.swing.JLabel jLabelCharacterImage;
     private javax.swing.JLabel jLabelCoin;
-    private javax.swing.JLabel jLabelMarketMan;
+    private javax.swing.JLabel jLabelExp;
     private javax.swing.JLabel jLabelMoney;
-    private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelMush;
     private javax.swing.JLabel jLabeltext;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanelMoney;
+    private javax.swing.JLabel jUserImg;
+    private javax.swing.JLabel jWizRideImg;
     // End of variables declaration//GEN-END:variables
 }

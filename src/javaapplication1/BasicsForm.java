@@ -234,7 +234,7 @@ public class BasicsForm extends javax.swing.JFrame {
             AdventureSelection ads = new AdventureSelection();
             ads.setVisible(true);
             ads.pack();
-            ads.passData(user, this.Class);
+            ads.passData(user, this.Class, "register");
             ads.setLocationRelativeTo(null);
             this.dispose();
         }

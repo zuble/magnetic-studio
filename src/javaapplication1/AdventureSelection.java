@@ -24,10 +24,7 @@ public class AdventureSelection extends javax.swing.JFrame {
      * Creates new form AdventureSelection
      */
     private int buttonPressedNo;    
-    private String user;
-    private String password;
-    private String Quest;
-    private String Class;
+    private String user , password , Quest , Class , Location;
     
     public AdventureSelection() {
         initComponents();
@@ -39,9 +36,10 @@ public class AdventureSelection extends javax.swing.JFrame {
         jButtonMind.setVisible(false);
         setIcon();  
     }
-    public void passData(String user, String Class) {
+    public void passData(String user, String Class, String where) {
         this.user = user;
         this.Class = Class;
+        this.Location = where;
     }
     public void setIcon(){
          setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
@@ -81,7 +79,7 @@ public class AdventureSelection extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(20, 20, 120, 130);
 
-        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
+        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         jLabeltext.setText("<html>As any great hero, you need a quest! <html>");
         jPanel1.add(jLabeltext);
         jLabeltext.setBounds(190, 20, 160, 80);
@@ -202,6 +200,7 @@ public class AdventureSelection extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 560, 410));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void CloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonMouseClicked
@@ -217,9 +216,9 @@ public class AdventureSelection extends javax.swing.JFrame {
     private void jButtonContinueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinueMouseClicked
         // TODO add your handling code here:
         buttonPressedNo ++;
-        if (buttonPressedNo==1)
-        {
-            jLabeltext.setText("<html>What type of adventure are you after? <html>");
+        if (buttonPressedNo==1){
+            if(Location.equals("register")){jLabeltext.setText("<html>What type of adventure are you after? <html>");}
+            if(Location.equals("UserHome")){jLabeltext.setText("<html>Knowledge must never cease. What adventure are we looking now? <html>");}
             jLabelSwordAndShield.setVisible(true);
             jLabelBook.setVisible(true);
             jLabelHeart.setVisible(true);
@@ -238,36 +237,25 @@ public class AdventureSelection extends javax.swing.JFrame {
                 ttf.passData(user, this.Quest ,Class);
                 this.dispose();    
         }
-
-
     }//GEN-LAST:event_jButtonContinueMouseClicked
 
     private void jButtonFitnessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonFitnessMouseClicked
-        // TODO add your handling code here:
-
         PreparedStatement ps;
-        ResultSet rs;
         String username = this.user;
         System.out.println(username);
                   
         String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";       
         
         try {
-            
             ps = My_CNX.getConnection().prepareStatement(query);
             ps.setString(1, "fitness");
             ps.setString(2, username);
-            if(ps.executeUpdate()!=0)
-                    {
-                        JOptionPane.showMessageDialog(null, "Quest selected!");                          
-                          
-                    }
-             
-        } catch (SQLException ex) {
+            if(ps.executeUpdate()!=0){JOptionPane.showMessageDialog(null, "Quest selected!");}
+        }catch (SQLException ex) {
             Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-           this.Quest= "fitness";
-           buttonPressedNo ++;
+        this.Quest= "fitness";
+        buttonPressedNo ++;
         if (buttonPressedNo==2){
             jLabeltext.setText("<html>Let's start! <html>");
             jLabelSwordAndShield.setVisible(true);
@@ -277,33 +265,25 @@ public class AdventureSelection extends javax.swing.JFrame {
             jButtonAcademic.setVisible(false);
             jButtonMind.setVisible(false);
             jButtonContinue.setVisible(true);
-
         }
-       
-
     }//GEN-LAST:event_jButtonFitnessMouseClicked
 
     private void jButtonAcademicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAcademicMouseClicked
        
         PreparedStatement ps;
-        ResultSet rs;
         String username = this.user;
         String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";
 
-        try {
+        try{
             ps = My_CNX.getConnection().prepareStatement(query);
             ps.setString(1, "academic");
             ps.setString(2, username);
-            if((ps.executeUpdate())!=0){
-                JOptionPane.showMessageDialog(null, "Quest selected!");
-            }
+            if((ps.executeUpdate())!=0){JOptionPane.showMessageDialog(null, "Quest selected!");}
         } catch (SQLException ex) {
             Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.Quest= "academic";
         buttonPressedNo ++;
-
         if (buttonPressedNo==2){
             jLabeltext.setText("<html>Let's start! <html>");
             jLabelSwordAndShield.setVisible(false);
@@ -313,14 +293,11 @@ public class AdventureSelection extends javax.swing.JFrame {
             jButtonAcademic.setVisible(false);
             jButtonMind.setVisible(false);
             jButtonContinue.setVisible(true);
-
         }
     }//GEN-LAST:event_jButtonAcademicMouseClicked
 
     private void jButtonMindMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonMindMouseClicked
-        // TODO add your handling code here:
         PreparedStatement ps;
-        ResultSet rs;
         String username = this.user;
         
         String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";      
@@ -329,19 +306,14 @@ public class AdventureSelection extends javax.swing.JFrame {
             ps = My_CNX.getConnection().prepareStatement(query);
             ps.setString(1, "mind");
             ps.setString(2, username);
-             if(ps.executeUpdate()!=0)
-                     {
-                         JOptionPane.showMessageDialog(null, "Quest selected!");                          
-                          
-                     }
-        } catch (SQLException ex) {
+             if(ps.executeUpdate()!=0){JOptionPane.showMessageDialog(null, "Quest selected!");}
+        }catch (SQLException ex) {
             Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.Quest = "mind";
         buttonPressedNo ++;
            
-        if (buttonPressedNo==2)
-        {
+        if (buttonPressedNo==2){
             jLabeltext.setText("<html>Let's start! <html>");
             jLabelSwordAndShield.setVisible(false);
             jLabelBook.setVisible(false);
@@ -350,7 +322,6 @@ public class AdventureSelection extends javax.swing.JFrame {
             jButtonAcademic.setVisible(false);
             jButtonMind.setVisible(false);
             jButtonContinue.setVisible(true);
-
         }
     }//GEN-LAST:event_jButtonMindMouseClicked
 

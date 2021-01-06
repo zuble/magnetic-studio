@@ -284,8 +284,8 @@ public class Login extends javax.swing.JFrame {
             
             if (rs.next()){
                 this.user =username;
-                gameplayForm gmf = new gameplayForm();
-                gmf.passData(username,true);
+                GameplayUserHomeForm gmf = new GameplayUserHomeForm();
+                gmf.passData(username,"login");
                 gmf.setVisible(true);
                 gmf.pack();
                 gmf.setLocationRelativeTo(null);
@@ -327,8 +327,8 @@ public class Login extends javax.swing.JFrame {
 
                 if (rs.next()){
                     this.user =username;
-                    gameplayForm gmf = new gameplayForm();
-                    gmf.passData(username,true);
+                    GameplayUserHomeForm gmf = new GameplayUserHomeForm();
+                    gmf.passData(username,"login");
                     gmf.setVisible(true);
                     gmf.pack();
                     gmf.setLocationRelativeTo(null);

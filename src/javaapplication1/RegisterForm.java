@@ -326,7 +326,7 @@ public class RegisterForm extends javax.swing.JFrame {
             if (!checkUsername(uname)){
                 PreparedStatement ps1, ps2;
                 ResultSet rs;
-                String registerUserQuery1  = "INSERT INTO `users`(`username`, `password`,`full_name`,`Class`,`Quest`,`wallet`) VALUES (?,?,?,?,?,?)";
+                String registerUserQuery1  = "INSERT INTO `users`(`username`, `password`,`full_name`,`Class`,`Quest`,`wallet`,`exp`) VALUES (?,?,?,?,?,?,?)";
                 
                 try {
                     ps1 = My_CNX.getConnection().prepareStatement(registerUserQuery1);
@@ -336,6 +336,7 @@ public class RegisterForm extends javax.swing.JFrame {
                     ps1.setString(4, "test");
                     ps1.setString(5, "test");
                     ps1.setInt(6, 0);
+                    ps1.setInt(7, 0);
                     
                     if(ps1.executeUpdate()!=0){
                         JOptionPane.showMessageDialog(null, "Your account has been created!");
