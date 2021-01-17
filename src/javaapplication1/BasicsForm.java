@@ -26,26 +26,24 @@ public class BasicsForm extends javax.swing.JFrame {
     private int buttonPressedNo=0;
     private String user;
     private String Class;
-    
+    DataUser UserData;
     Login login;
     
     public BasicsForm() {
         initComponents();
         login = new Login();
         setIcon();
-         this.setLocationRelativeTo(null);
-         jLabelArcher.setVisible(false);
-         jLabelFighter.setVisible(false);
-         jLabelHealer.setVisible(false);
-         jButtonFighter.setVisible(false);
-         jButtonArcher.setVisible(false);
-         jButtonHealer.setVisible(false);
-    }
- public void setIcon()
-    {
-         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
+        archerLabel.setVisible(false);
+        fighterLabel.setVisible(false);
+        healerLabel.setVisible(false);
+        fighterButton.setVisible(false);
+        archerButton.setVisible(false);
+        healerButton.setVisible(false);
     }
     
+    public void setIcon(){
+         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
+    }
     
     public void passData(String user) {
         this.user = user;     
@@ -60,284 +58,265 @@ public class BasicsForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabeltext = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButtonContinue = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        CloseButton = new javax.swing.JLabel();
-        MinimizeButton = new javax.swing.JLabel();
-        jLabelFighter = new javax.swing.JLabel();
-        jLabelHealer = new javax.swing.JLabel();
-        jLabelArcher = new javax.swing.JLabel();
-        jButtonFighter = new javax.swing.JButton();
-        jButtonHealer = new javax.swing.JButton();
-        jButtonArcher = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        closeMinPanel = new javax.swing.JPanel();
+        closeButton = new javax.swing.JLabel();
+        minimizeButton = new javax.swing.JLabel();
+        wizImg = new javax.swing.JLabel();
+        wizardSpeach = new javax.swing.JLabel();
+        wizardBallon = new javax.swing.JLabel();
+        continueButton = new javax.swing.JButton();
+        fighterLabel = new javax.swing.JLabel();
+        fighterButton = new javax.swing.JButton();
+        healerLabel = new javax.swing.JLabel();
+        healerButton = new javax.swing.JButton();
+        archerLabel = new javax.swing.JLabel();
+        archerButton = new javax.swing.JButton();
+        background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(700, 500));
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel2.setMinimumSize(new java.awt.Dimension(700, 500));
         jPanel2.setLayout(null);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wizard2.png"))); // NOI18N
-        jPanel2.add(jLabel2);
-        jLabel2.setBounds(20, 20, 120, 130);
+        closeMinPanel.setBackground(new java.awt.Color(153, 102, 0));
+        closeMinPanel.setBorder(new javax.swing.border.MatteBorder(null));
 
-        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
-        jLabeltext.setText("<html> Let's start with the basics. <html>");
-        jPanel2.add(jLabeltext);
-        jLabeltext.setBounds(190, 20, 160, 80);
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/balloon22.png"))); // NOI18N
-        jPanel2.add(jLabel3);
-        jLabel3.setBounds(160, 0, 240, 130);
-
-        jButtonContinue.setBackground(new java.awt.Color(153, 153, 255));
-        jButtonContinue.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonContinue.setText("Continue");
-        jButtonContinue.setBorder(new javax.swing.border.MatteBorder(null));
-        jButtonContinue.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonContinue.addMouseListener(new java.awt.event.MouseAdapter() {
+        closeButton.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
+        closeButton.setForeground(new java.awt.Color(255, 255, 255));
+        closeButton.setText("X");
+        closeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonContinueMouseClicked(evt);
-            }
-        });
-        jPanel2.add(jButtonContinue);
-        jButtonContinue.setBounds(140, 350, 250, 30);
-
-        jPanel3.setBackground(new java.awt.Color(153, 102, 0));
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        CloseButton.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
-        CloseButton.setText("X");
-        CloseButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        CloseButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CloseButtonMouseClicked(evt);
+                closeButtonMouseClicked(evt);
             }
         });
 
-        MinimizeButton.setFont(new java.awt.Font("Book Antiqua", 1, 48)); // NOI18N
-        MinimizeButton.setText("-");
-        MinimizeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        MinimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        minimizeButton.setFont(new java.awt.Font("Book Antiqua", 1, 48)); // NOI18N
+        minimizeButton.setForeground(new java.awt.Color(255, 255, 255));
+        minimizeButton.setText("-");
+        minimizeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                MinimizeButtonMouseClicked(evt);
+                minimizeButtonMouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(MinimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        javax.swing.GroupLayout closeMinPanelLayout = new javax.swing.GroupLayout(closeMinPanel);
+        closeMinPanel.setLayout(closeMinPanelLayout);
+        closeMinPanelLayout.setHorizontalGroup(
+            closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, closeMinPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        closeMinPanelLayout.setVerticalGroup(
+            closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(closeMinPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MinimizeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CloseButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addGroup(closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minimizeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(closeButton, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
-        jPanel2.add(jPanel3);
-        jPanel3.setBounds(500, 0, 60, 30);
+        jPanel2.add(closeMinPanel);
+        closeMinPanel.setBounds(620, 0, 80, 30);
 
-        jLabelFighter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fighter.png"))); // NOI18N
-        jLabelFighter.setText("warrior");
-        jLabelFighter.addMouseListener(new java.awt.event.MouseAdapter() {
+        wizImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wizard2.png"))); // NOI18N
+        jPanel2.add(wizImg);
+        wizImg.setBounds(20, 80, 120, 130);
+
+        wizardSpeach.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        wizardSpeach.setText("<html> Let's start with the basics. <html>");
+        jPanel2.add(wizardSpeach);
+        wizardSpeach.setBounds(170, 20, 160, 80);
+
+        wizardBallon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/balloon22.png"))); // NOI18N
+        jPanel2.add(wizardBallon);
+        wizardBallon.setBounds(140, 0, 240, 130);
+
+        continueButton.setBackground(new java.awt.Color(153, 153, 255));
+        continueButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        continueButton.setForeground(new java.awt.Color(255, 255, 255));
+        continueButton.setText("Continue");
+        continueButton.setBorder(new javax.swing.border.MatteBorder(null));
+        continueButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        continueButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelFighterMouseClicked(evt);
+                continueButtonMouseClicked(evt);
             }
         });
-        jPanel2.add(jLabelFighter);
-        jLabelFighter.setBounds(60, 170, 140, 150);
+        jPanel2.add(continueButton);
+        continueButton.setBounds(280, 460, 160, 30);
 
-        jLabelHealer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/healer.png"))); // NOI18N
-        jPanel2.add(jLabelHealer);
-        jLabelHealer.setBounds(210, 180, 110, 130);
-
-        jLabelArcher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/archer.png"))); // NOI18N
-        jPanel2.add(jLabelArcher);
-        jLabelArcher.setBounds(360, 180, 110, 130);
-
-        jButtonFighter.setBackground(new java.awt.Color(255, 51, 51));
-        jButtonFighter.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonFighter.setText("Fighter");
-        jButtonFighter.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonFighter.addMouseListener(new java.awt.event.MouseAdapter() {
+        fighterLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fighter.png"))); // NOI18N
+        fighterLabel.setText("warrior");
+        fighterLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonFighterMouseClicked(evt);
+                fighterLabelMouseClicked(evt);
             }
         });
-        jPanel2.add(jButtonFighter);
-        jButtonFighter.setBounds(80, 317, 80, 25);
+        jPanel2.add(fighterLabel);
+        fighterLabel.setBounds(300, 200, 130, 150);
 
-        jButtonHealer.setBackground(new java.awt.Color(204, 255, 255));
-        jButtonHealer.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonHealer.setText("Healer");
-        jButtonHealer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonHealer.addMouseListener(new java.awt.event.MouseAdapter() {
+        fighterButton.setBackground(new java.awt.Color(255, 51, 51));
+        fighterButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        fighterButton.setForeground(new java.awt.Color(255, 255, 255));
+        fighterButton.setText("Fighter");
+        fighterButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        fighterButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonHealerMouseClicked(evt);
+                fighterButtonMouseClicked(evt);
             }
         });
-        jPanel2.add(jButtonHealer);
-        jButtonHealer.setBounds(230, 317, 80, 25);
+        jPanel2.add(fighterButton);
+        fighterButton.setBounds(320, 360, 80, 26);
 
-        jButtonArcher.setBackground(new java.awt.Color(153, 255, 0));
-        jButtonArcher.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonArcher.setText("Archer");
-        jButtonArcher.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonArcher.addMouseListener(new java.awt.event.MouseAdapter() {
+        healerLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/healer.png"))); // NOI18N
+        jPanel2.add(healerLabel);
+        healerLabel.setBounds(500, 210, 110, 130);
+
+        healerButton.setBackground(new java.awt.Color(204, 255, 255));
+        healerButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        healerButton.setForeground(new java.awt.Color(255, 255, 255));
+        healerButton.setText("Healer");
+        healerButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        healerButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonArcherMouseClicked(evt);
+                healerButtonMouseClicked(evt);
             }
         });
-        jPanel2.add(jButtonArcher);
-        jButtonArcher.setBounds(370, 317, 80, 25);
+        jPanel2.add(healerButton);
+        healerButton.setBounds(520, 360, 80, 26);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/tavern.jpg"))); // NOI18N
-        jPanel2.add(jLabel1);
-        jLabel1.setBounds(0, 0, 560, 410);
+        archerLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/archer.png"))); // NOI18N
+        jPanel2.add(archerLabel);
+        archerLabel.setBounds(120, 210, 110, 130);
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 560, 410));
+        archerButton.setBackground(new java.awt.Color(153, 255, 0));
+        archerButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        archerButton.setForeground(new java.awt.Color(255, 255, 255));
+        archerButton.setText("Archer");
+        archerButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        archerButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                archerButtonMouseClicked(evt);
+            }
+        });
+        jPanel2.add(archerButton);
+        archerButton.setBounds(130, 360, 80, 26);
+
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/tavern.jpg"))); // NOI18N
+        background.setMaximumSize(new java.awt.Dimension(7100, 5000));
+        background.setMinimumSize(new java.awt.Dimension(700, 500));
+        background.setPreferredSize(new java.awt.Dimension(700, 500));
+        jPanel2.add(background);
+        background.setBounds(0, 0, 700, 500);
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonContinueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinueMouseClicked
+    private void continueButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_continueButtonMouseClicked
         // TODO add your handling code here:
         buttonPressedNo ++;
         if (buttonPressedNo==1){
-            jLabeltext.setText("<html> Let's pick your class! <html>");
+            wizardSpeach.setText("<html> Let's pick your class! <html>");
         }
         if (buttonPressedNo==2){
-            jLabeltext.setText("<html> I'm already the wizard! <html>");
-            jLabelArcher.setVisible(true);
-            jLabelFighter.setVisible(true);
-            jLabelHealer.setVisible(true);
-            jButtonFighter.setVisible(true);
-            jButtonArcher.setVisible(true);
-            jButtonHealer.setVisible(true);
-            jButtonContinue.setVisible(false);
+            wizardSpeach.setText("<html>I'm... ahhh lets call it a Wizard!<html>");
+            archerLabel.setVisible(true);
+            fighterLabel.setVisible(true);
+            healerLabel.setVisible(true);
+            fighterButton.setVisible(true);
+            archerButton.setVisible(true);
+            healerButton.setVisible(true);
+            continueButton.setVisible(false);
         }
         if (buttonPressedNo==4){
             AdventureSelection ads = new AdventureSelection();
             ads.setVisible(true);
             ads.pack();
-            ads.passData(user, this.Class, "register");
+            ads.passData(this.user, this.Class, "register");
             ads.setLocationRelativeTo(null);
             this.dispose();
         }
-    }//GEN-LAST:event_jButtonContinueMouseClicked
+    }//GEN-LAST:event_continueButtonMouseClicked
 
-    private void CloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonMouseClicked
+    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
         // TODO add your handling code here:
         System.exit(0);
-    }//GEN-LAST:event_CloseButtonMouseClicked
+    }//GEN-LAST:event_closeButtonMouseClicked
 
-    private void MinimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MinimizeButtonMouseClicked
+    private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
         // TODO add your handling code here:
         this.setState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_MinimizeButtonMouseClicked
+    }//GEN-LAST:event_minimizeButtonMouseClicked
 
-    private void jLabelFighterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFighterMouseClicked
+    private void fighterLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fighterLabelMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jLabelFighterMouseClicked
+    }//GEN-LAST:event_fighterLabelMouseClicked
 
-    private void jButtonFighterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonFighterMouseClicked
-        // TODO add your handling code here:
-        PreparedStatement ps;
-        String username = this.user;
-        String query = "UPDATE `users` SET `Class`= 'fighter' WHERE `username` = ?";        
+    private void fighterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fighterButtonMouseClicked
         
-        try {
-            ps = My_CNX.getConnection().prepareStatement(query);
-            ps.setString(1, username);
-            if(ps.executeUpdate()!=0){
-                JOptionPane.showMessageDialog(null, "Class selected!");                          
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        UserData = new DataUser(this.user);
+        UserData.updateUserClass("fighter");
+        JOptionPane.showMessageDialog(null, "Class selected!");
         this.Class= "fighter";
         buttonPressedNo ++;
         if (buttonPressedNo==3){
-            jLabeltext.setText("<html> A Fighter! I see you've got strength in you! <html>");
-            jButtonArcher.setVisible(false);
-            jButtonHealer.setVisible(false);
-            jButtonFighter.setVisible(false);
-            jLabelArcher.setVisible(false);
-            jLabelHealer.setVisible(false);
-            jButtonContinue.setVisible(true);
+            wizardSpeach.setText("<html> A Fighter! I see you've got strength in you! <html>");
+            archerButton.setVisible(false);
+            healerButton.setVisible(false);
+            fighterButton.setVisible(false);
+            archerLabel.setVisible(false);
+            healerLabel.setVisible(false);
+            continueButton.setVisible(true);
         }
                   
-    }//GEN-LAST:event_jButtonFighterMouseClicked
+    }//GEN-LAST:event_fighterButtonMouseClicked
 
-    private void jButtonHealerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonHealerMouseClicked
-        // TODO add your handling code here:
-        PreparedStatement ps;
-        String username = this.user;
-        String query = "UPDATE `users` SET `Class`= 'healer' WHERE `username` = ?";        
-
-        try {
-            ps = My_CNX.getConnection().prepareStatement(query);
-            ps.setString(1, username);
-            if(ps.executeUpdate()!=0){
-                JOptionPane.showMessageDialog(null, "Class selected!");                          
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void healerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_healerButtonMouseClicked
+        
+        UserData = new DataUser(this.user);
+        UserData.updateUserClass("healer");
+        JOptionPane.showMessageDialog(null, "Class selected!");
         this.Class= "healer";
         buttonPressedNo ++;
         if (buttonPressedNo==3){
-            jLabeltext.setText("<html> A Healer! The brave protector of those in need! <html>");
-            jButtonFighter.setVisible(false);
-            jButtonArcher.setVisible(false);
-            jButtonHealer.setVisible(false);
-            jLabelFighter.setVisible(false);
-            jLabelArcher.setVisible(false);
-            jButtonContinue.setVisible(true);
+            wizardSpeach.setText("<html> A Healer! The brave protector of those in need! <html>");
+            fighterButton.setVisible(false);
+            archerButton.setVisible(false);
+            healerButton.setVisible(false);
+            fighterLabel.setVisible(false);
+            archerLabel.setVisible(false);
+            continueButton.setVisible(true);
         }
-    }//GEN-LAST:event_jButtonHealerMouseClicked
+    }//GEN-LAST:event_healerButtonMouseClicked
 
-    private void jButtonArcherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonArcherMouseClicked
-        // TODO add your handling code here:
-        PreparedStatement ps;
-        String username = this.user;
-        String query = "UPDATE `users` SET `Class`= 'archer' WHERE `username` = ?";        
-     
-        try {
-            ps = My_CNX.getConnection().prepareStatement(query);
-            ps.setString(1, username);
-            if(ps.executeUpdate()!=0){
-                JOptionPane.showMessageDialog(null, "Class selected!");                          
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void archerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_archerButtonMouseClicked
+        
+        UserData = new DataUser(this.user);
+        UserData.updateUserClass("archer");
+        JOptionPane.showMessageDialog(null, "Class selected!");
         this.Class= "archer";
         buttonPressedNo ++;
         if (buttonPressedNo==3){
-            jLabeltext.setText("<html> An Archer! I can tell you've got keen eyes! <html>");
-            jButtonFighter.setVisible(false);
-            jButtonArcher.setVisible(false);
-            jButtonHealer.setVisible(false);
-            jLabelFighter.setVisible(false);
-            jLabelHealer.setVisible(false);
-            jButtonContinue.setVisible(true);
+            wizardSpeach.setText("<html> An Archer! I can tell you've got keen eyes! <html>");
+            fighterButton.setVisible(false);
+            archerButton.setVisible(false);
+            healerButton.setVisible(false);
+            fighterLabel.setVisible(false);
+            healerLabel.setVisible(false);
+            continueButton.setVisible(true);
         }
-    }//GEN-LAST:event_jButtonArcherMouseClicked
+    }//GEN-LAST:event_archerButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -375,20 +354,20 @@ public class BasicsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CloseButton;
-    private javax.swing.JLabel MinimizeButton;
-    private javax.swing.JButton jButtonArcher;
-    private javax.swing.JButton jButtonContinue;
-    private javax.swing.JButton jButtonFighter;
-    private javax.swing.JButton jButtonHealer;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabelArcher;
-    private javax.swing.JLabel jLabelFighter;
-    private javax.swing.JLabel jLabelHealer;
-    private javax.swing.JLabel jLabeltext;
+    private javax.swing.JButton archerButton;
+    private javax.swing.JLabel archerLabel;
+    private javax.swing.JLabel background;
+    private javax.swing.JLabel closeButton;
+    private javax.swing.JPanel closeMinPanel;
+    private javax.swing.JButton continueButton;
+    private javax.swing.JButton fighterButton;
+    private javax.swing.JLabel fighterLabel;
+    private javax.swing.JButton healerButton;
+    private javax.swing.JLabel healerLabel;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel minimizeButton;
+    private javax.swing.JLabel wizImg;
+    private javax.swing.JLabel wizardBallon;
+    private javax.swing.JLabel wizardSpeach;
     // End of variables declaration//GEN-END:variables
 }

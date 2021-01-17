@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * @author Legion
  */
 public class DataUser {
-    private int User_wallet , User_exp;
+    private int User_wallet , User_wisdom;
     private String Username , User_class, User_quest;
  
     public DataUser(String username) {
@@ -24,11 +24,12 @@ public class DataUser {
             st = My_CNX.getConnection().prepareStatement(queryClass);
             st.setString(1, username);
             rs = st.executeQuery();
-            rs.next();
-            this.User_class = rs.getString("Class");
-            this.User_quest = rs.getString("Quest");
-            this.User_wallet = rs.getInt("wallet");
-            this.User_exp = rs.getInt("exp");   
+            while ( rs.next() ){
+                this.User_class = rs.getString("Class");
+                this.User_quest = rs.getString("Quest");
+                this.User_wallet = rs.getInt("wallet");
+                this.User_wisdom = rs.getInt("wisdom");
+            }
         } catch (SQLException ex) {
         Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,9 +44,10 @@ public class DataUser {
     public int getUserWallet(){
         return this.User_wallet;
     }
-    public int getUserExp(){
-        return this.User_exp;
+    public int getUserWisdom(){
+        return this.User_wisdom;
     }
+    
     public void updateUserWallet(int value, String operation){
         PreparedStatement st;
         String walletDBquery = null;
@@ -61,17 +63,46 @@ public class DataUser {
         }
     }
     
-    public void updateUserExp(int Chall_exp_value){
+    public void updateUserWisdom(int Chall_wisdom_value){
         PreparedStatement st;
-        String expDBquery = "UPDATE `users` SET `exp`=`exp` + ? WHERE `username` = ? ";
+        String wisdomDBquery = "UPDATE `users` SET `wisdom`=`wisdom` + ? WHERE `username` = ? ";
         try {
-            st = My_CNX.getConnection().prepareStatement(expDBquery);
-            st.setInt(1,Chall_exp_value);
+            st = My_CNX.getConnection().prepareStatement(wisdomDBquery);
+            st.setInt(1,Chall_wisdom_value);
             st.setString(2,this.Username);
             st.executeUpdate();
             } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //UPDATES THE LOCAL WISDOM VARIABLE
+        this.User_wisdom = this.User_wisdom + Chall_wisdom_value;
+    }
+    
+    public void updateUserQuest(String Quest){
+        PreparedStatement ps;
+        String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";
+        try{
+            ps = My_CNX.getConnection().prepareStatement(query);
+            ps.setString(1, Quest);
+            ps.setString(2, this.Username);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    public void updateUserClass(String Class){
+        PreparedStatement ps;
+        String query = "UPDATE `users` SET `Class`= ? WHERE `username` = ?";
+        System.out.println(Class + this.Username);
+        try{
+            ps = My_CNX.getConnection().prepareStatement(query);
+            ps.setString(1, Class);
+            ps.setString(2, this.Username);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
 }

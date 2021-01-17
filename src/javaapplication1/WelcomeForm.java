@@ -31,9 +31,8 @@ public class WelcomeForm extends javax.swing.JFrame {
     public void passData(String user) {
         this.user = user;
     }
-    public void setIcon()
-    {
-         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
+    public void setIcon(){
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
     }
 
     /**
@@ -46,177 +45,158 @@ public class WelcomeForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        CloseButton = new javax.swing.JLabel();
-        MinimizeButton = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabeltext = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jButtonContinue = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        closeMinPanel = new javax.swing.JPanel();
+        closeButton = new javax.swing.JLabel();
+        minimizeButton = new javax.swing.JLabel();
+        welcomeLabel = new javax.swing.JLabel();
+        wizImg = new javax.swing.JLabel();
+        wizSpeach = new javax.swing.JLabel();
+        wizBallon = new javax.swing.JLabel();
+        continueButton = new javax.swing.JButton();
+        background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(700, 500));
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(null);
 
-        jPanel3.setBackground(new java.awt.Color(204, 255, 204));
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        closeMinPanel.setBackground(new java.awt.Color(204, 255, 204));
+        closeMinPanel.setBorder(new javax.swing.border.MatteBorder(null));
 
-        CloseButton.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
-        CloseButton.setText("X");
-        CloseButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        CloseButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        closeButton.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
+        closeButton.setForeground(new java.awt.Color(255, 255, 255));
+        closeButton.setText("X");
+        closeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CloseButtonMouseClicked(evt);
+                closeButtonMouseClicked(evt);
             }
         });
 
-        MinimizeButton.setFont(new java.awt.Font("Book Antiqua", 1, 48)); // NOI18N
-        MinimizeButton.setText("-");
-        MinimizeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        MinimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        minimizeButton.setFont(new java.awt.Font("Book Antiqua", 1, 48)); // NOI18N
+        minimizeButton.setForeground(new java.awt.Color(255, 255, 255));
+        minimizeButton.setText("-");
+        minimizeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                MinimizeButtonMouseClicked(evt);
+                minimizeButtonMouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(MinimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        javax.swing.GroupLayout closeMinPanelLayout = new javax.swing.GroupLayout(closeMinPanel);
+        closeMinPanel.setLayout(closeMinPanelLayout);
+        closeMinPanelLayout.setHorizontalGroup(
+            closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, closeMinPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        closeMinPanelLayout.setVerticalGroup(
+            closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(closeMinPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MinimizeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CloseButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addGroup(closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minimizeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(closeButton, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
-        jPanel1.add(jPanel3);
-        jPanel3.setBounds(480, 0, 60, 30);
+        jPanel1.add(closeMinPanel);
+        closeMinPanel.setBounds(620, 0, 80, 30);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wizard.png"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(160, 170, 170, 170);
+        welcomeLabel.setFont(new java.awt.Font("Book Antiqua", 1, 36)); // NOI18N
+        welcomeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        welcomeLabel.setText("Welcome!");
+        jPanel1.add(welcomeLabel);
+        welcomeLabel.setBounds(10, 10, 170, 47);
 
-        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
-        jLabeltext.setText("<html> Greetings adventurer! <html>");
-        jPanel1.add(jLabeltext);
-        jLabeltext.setBounds(290, 70, 150, 100);
+        wizImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wizard.png"))); // NOI18N
+        jPanel1.add(wizImg);
+        wizImg.setBounds(40, 280, 170, 170);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ballon1.png"))); // NOI18N
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(260, 50, 210, 150);
+        wizSpeach.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        wizSpeach.setText("<html> Greetings adventurer! <html>");
+        wizSpeach.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(wizSpeach);
+        wizSpeach.setBounds(210, 200, 150, 100);
 
-        jPanel2.setBackground(new java.awt.Color(204, 255, 204));
-        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel2.setForeground(new java.awt.Color(204, 255, 204));
+        wizBallon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ballon1.png"))); // NOI18N
+        jPanel1.add(wizBallon);
+        wizBallon.setBounds(180, 180, 210, 150);
 
-        jLabel5.setFont(new java.awt.Font("Book Antiqua", 1, 36)); // NOI18N
-        jLabel5.setText("Welcome!");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel5)
-                .addGap(0, 2, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel5))
-        );
-
-        jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 170, 50);
-
-        jButtonContinue.setBackground(new java.awt.Color(153, 153, 255));
-        jButtonContinue.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonContinue.setText("Continue");
-        jButtonContinue.setBorder(new javax.swing.border.MatteBorder(null));
-        jButtonContinue.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonContinue.addMouseListener(new java.awt.event.MouseAdapter() {
+        continueButton.setBackground(new java.awt.Color(153, 153, 255));
+        continueButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        continueButton.setForeground(new java.awt.Color(255, 255, 255));
+        continueButton.setText("Continue");
+        continueButton.setBorder(new javax.swing.border.MatteBorder(null));
+        continueButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        continueButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonContinueMouseClicked(evt);
+                continueButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(jButtonContinue);
-        jButtonContinue.setBounds(140, 350, 250, 30);
+        jPanel1.add(continueButton);
+        continueButton.setBounds(270, 440, 150, 30);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/backgroundTown.png"))); // NOI18N
-        jLabel2.setText("jLabel2");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(0, 0, 540, 405);
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/backgroundTown.png"))); // NOI18N
+        background.setText("jLabel2");
+        background.setMinimumSize(new java.awt.Dimension(700, 500));
+        background.setPreferredSize(new java.awt.Dimension(700, 500));
+        jPanel1.add(background);
+        background.setBounds(0, 0, 700, 500);
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 541, 405));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonMouseClicked
-        // TODO add your handling code here:
+    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
         System.exit(0);
-    }//GEN-LAST:event_CloseButtonMouseClicked
+    }//GEN-LAST:event_closeButtonMouseClicked
 
-    private void MinimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MinimizeButtonMouseClicked
-        // TODO add your handling code here:
+    private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
         this.setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_minimizeButtonMouseClicked
 
-    }//GEN-LAST:event_MinimizeButtonMouseClicked
-
-    private void jButtonContinueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinueMouseClicked
+    private void continueButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_continueButtonMouseClicked
         // TODO add your handling code here:
         buttonPressedNo++;
         if (buttonPressedNo == 1) {
-            jLabeltext.setText("<html> Welcome to VitaQuest!<html>");
-
+            wizSpeach.setText("<html>Welcome to VitaQuest!<html>");
         }
         if (buttonPressedNo == 2) {
-            jLabeltext.setText("<html>I'll be your friendly guide!<html>");
+            wizSpeach.setText("<html>I am Curuga Noxeror, a human being on planet earth with some knowledge to share. I'll be your friendly tutor!<html>");
         }
         if (buttonPressedNo == 3) {
-            jLabeltext.setText("<html>Are you ready to start your adventure?<html>");
+            wizSpeach.setText("<html>Are you ready to start your adventure?<html>");
 
-            jButtonContinue.setText("Yes!");
-
+            continueButton.setText("Yes!");
         }
         if (buttonPressedNo == 4) {
-            jLabeltext.setText("<html>That's the spirit!<html>");
+            wizSpeach.setText("<html>That's the spirit!<html>");
 
-            jButtonContinue.setText("Let's go!");
+            continueButton.setText("Let's go!");
 
         }
         if (buttonPressedNo == 5) {
-            jLabeltext.setText("<html>Let's get to the Tavern and talk there!<html>");
+            wizSpeach.setText("<html>Let's get to the Tavern and talk there!<html>");
 
-            jButtonContinue.setText("Let's get a beer!");
+            continueButton.setText("Let's get a beer!");
 
         }
         if (buttonPressedNo == 6) {
             BasicsForm bsf = new BasicsForm();
-            bsf.passData(user);
             bsf.setVisible(true);
+            bsf.passData(this.user);
             bsf.pack();
             bsf.setLocationRelativeTo(null);
             this.dispose();
         }
-
-    }//GEN-LAST:event_jButtonContinueMouseClicked
+    }//GEN-LAST:event_continueButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -255,17 +235,16 @@ public class WelcomeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CloseButton;
-    private javax.swing.JLabel MinimizeButton;
-    private javax.swing.JButton jButtonContinue;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabeltext;
+    private javax.swing.JLabel background;
+    private javax.swing.JLabel closeButton;
+    private javax.swing.JPanel closeMinPanel;
+    private javax.swing.JButton continueButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel minimizeButton;
+    private javax.swing.JLabel welcomeLabel;
+    private javax.swing.JLabel wizBallon;
+    private javax.swing.JLabel wizImg;
+    private javax.swing.JLabel wizSpeach;
     // End of variables declaration//GEN-END:variables
 
 }

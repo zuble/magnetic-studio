@@ -6,11 +6,6 @@
 package javaapplication1;
 
 import java.awt.Toolkit;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -20,26 +15,32 @@ import javax.swing.JOptionPane;
  */
 public class AdventureSelection extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdventureSelection
-     */
     private int buttonPressedNo;    
-    private String user , password , Quest , Class , Location;
+    private String user , Quest , Class , Location;
+    private boolean atLeast1ChallDone;
+    DataUser UserData;
+    DataChall ChallData;
     
     public AdventureSelection() {
         initComponents();
-        jLabelSwordAndShield.setVisible(false);
-        jLabelBook.setVisible(false);
-        jLabelHeart.setVisible(false);
-        jButtonFitness.setVisible(false);
-        jButtonAcademic.setVisible(false);
-        jButtonMind.setVisible(false);
-        setIcon();  
+        academicImg.setVisible(false);
+        academicButton.setVisible(false);
+        academicLabel.setVisible(false);
+        fitnessImg.setVisible(false);
+        fitnessButton.setVisible(false);
+        mindImg.setVisible(false);
+        mindButton.setVisible(false);
+        mindLabel.setVisible(false);
+        setIcon();
+         
     }
-    public void passData(String user, String Class, String where) {
+    public void passData(String user, String Class, String Location) {
         this.user = user;
         this.Class = Class;
-        this.Location = where;
+        this.Location = Location;
+        
+        if(Location.equals("register"))wizSpeach.setText("<html>As any ambitious human, you need a focus, a direction, a quest! <html>");
+        if(Location.equals("newAdventure"))wizSpeach.setText("<html>The thirst of knowledge must never, never cease.<html>");   
     }
     public void setIcon(){
          setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
@@ -54,277 +55,302 @@ public class AdventureSelection extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabeltext = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        CloseButton = new javax.swing.JLabel();
-        MinimizeButton = new javax.swing.JLabel();
-        jLabelSwordAndShield = new javax.swing.JLabel();
-        jLabelBook = new javax.swing.JLabel();
-        jLabelHeart = new javax.swing.JLabel();
-        jButtonContinue = new javax.swing.JButton();
-        jButtonFitness = new javax.swing.JButton();
-        jButtonAcademic = new javax.swing.JButton();
-        jButtonMind = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        closeMinPanel = new javax.swing.JPanel();
+        closeButton = new javax.swing.JLabel();
+        minimizeButton = new javax.swing.JLabel();
+        wizImg = new javax.swing.JLabel();
+        wizSpeach = new javax.swing.JLabel();
+        wizBallon = new javax.swing.JLabel();
+        academicImg = new javax.swing.JLabel();
+        academicLabel = new javax.swing.JLabel();
+        academicButton = new javax.swing.JButton();
+        fitnessImg = new javax.swing.JLabel();
+        fitnessButton = new javax.swing.JButton();
+        mindImg = new javax.swing.JLabel();
+        mindLabel = new javax.swing.JLabel();
+        mindButton = new javax.swing.JButton();
+        continueButton = new javax.swing.JButton();
+        background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(700, 600));
+        setMinimumSize(new java.awt.Dimension(700, 500));
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setMinimumSize(new java.awt.Dimension(700, 500));
         jPanel1.setLayout(null);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wizard2.png"))); // NOI18N
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 20, 120, 130);
+        closeMinPanel.setBackground(new java.awt.Color(153, 102, 0));
+        closeMinPanel.setBorder(new javax.swing.border.MatteBorder(null));
 
-        jLabeltext.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jLabeltext.setText("<html>As any great hero, you need a quest! <html>");
-        jPanel1.add(jLabeltext);
-        jLabeltext.setBounds(190, 20, 160, 80);
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/balloon22.png"))); // NOI18N
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(160, 0, 240, 130);
-
-        jPanel3.setBackground(new java.awt.Color(153, 102, 0));
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        CloseButton.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
-        CloseButton.setText("X");
-        CloseButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        CloseButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        closeButton.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
+        closeButton.setForeground(new java.awt.Color(255, 255, 255));
+        closeButton.setText("X");
+        closeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CloseButtonMouseClicked(evt);
+                closeButtonMouseClicked(evt);
             }
         });
 
-        MinimizeButton.setFont(new java.awt.Font("Book Antiqua", 1, 48)); // NOI18N
-        MinimizeButton.setText("-");
-        MinimizeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        MinimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        minimizeButton.setFont(new java.awt.Font("Book Antiqua", 1, 48)); // NOI18N
+        minimizeButton.setForeground(new java.awt.Color(255, 255, 255));
+        minimizeButton.setText("-");
+        minimizeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                MinimizeButtonMouseClicked(evt);
+                minimizeButtonMouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(MinimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        javax.swing.GroupLayout closeMinPanelLayout = new javax.swing.GroupLayout(closeMinPanel);
+        closeMinPanel.setLayout(closeMinPanelLayout);
+        closeMinPanelLayout.setHorizontalGroup(
+            closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, closeMinPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        closeMinPanelLayout.setVerticalGroup(
+            closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(closeMinPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MinimizeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CloseButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addGroup(closeMinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minimizeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(closeButton, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
-        jPanel1.add(jPanel3);
-        jPanel3.setBounds(500, 0, 60, 30);
+        jPanel1.add(closeMinPanel);
+        closeMinPanel.setBounds(620, 0, 80, 30);
 
-        jLabelSwordAndShield.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SwordAndShield.png"))); // NOI18N
-        jPanel1.add(jLabelSwordAndShield);
-        jLabelSwordAndShield.setBounds(20, 130, 150, 140);
+        wizImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wizard2.png"))); // NOI18N
+        jPanel1.add(wizImg);
+        wizImg.setBounds(20, 80, 120, 130);
 
-        jLabelBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/book.png"))); // NOI18N
-        jPanel1.add(jLabelBook);
-        jLabelBook.setBounds(210, 150, 130, 120);
+        wizSpeach.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        jPanel1.add(wizSpeach);
+        wizSpeach.setBounds(170, 20, 160, 80);
 
-        jLabelHeart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/heart.png"))); // NOI18N
-        jPanel1.add(jLabelHeart);
-        jLabelHeart.setBounds(380, 150, 130, 120);
+        wizBallon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/balloon22.png"))); // NOI18N
+        jPanel1.add(wizBallon);
+        wizBallon.setBounds(140, 0, 240, 130);
 
-        jButtonContinue.setBackground(new java.awt.Color(153, 153, 255));
-        jButtonContinue.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonContinue.setText("Continue");
-        jButtonContinue.setBorder(new javax.swing.border.MatteBorder(null));
-        jButtonContinue.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonContinue.addMouseListener(new java.awt.event.MouseAdapter() {
+        academicImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/book.png"))); // NOI18N
+        jPanel1.add(academicImg);
+        academicImg.setBounds(120, 270, 90, 70);
+
+        academicLabel.setFont(fitnessButton.getFont());
+        academicLabel.setForeground(new java.awt.Color(255, 255, 255));
+        academicLabel.setText("<html>Improve     Academic  Performance");
+        academicLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        academicLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        academicLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(academicLabel);
+        academicLabel.setBounds(120, 350, 110, 40);
+
+        academicButton.setBackground(new java.awt.Color(51, 153, 255));
+        academicButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        academicButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        academicButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonContinueMouseClicked(evt);
+                academicButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(jButtonContinue);
-        jButtonContinue.setBounds(140, 350, 250, 30);
+        jPanel1.add(academicButton);
+        academicButton.setBounds(110, 350, 120, 40);
 
-        jButtonFitness.setBackground(new java.awt.Color(255, 51, 51));
-        jButtonFitness.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonFitness.setText("<html>Improve Fitness <html>");
-        jButtonFitness.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonFitness.addMouseListener(new java.awt.event.MouseAdapter() {
+        fitnessImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SwordAndShield.png"))); // NOI18N
+        jPanel1.add(fitnessImg);
+        fitnessImg.setBounds(310, 240, 100, 100);
+
+        fitnessButton.setBackground(new java.awt.Color(255, 51, 51));
+        fitnessButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        fitnessButton.setForeground(new java.awt.Color(255, 255, 255));
+        fitnessButton.setText("<html>Improve Fitness <html>");
+        fitnessButton.setBorder(new javax.swing.border.MatteBorder(null));
+        fitnessButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        fitnessButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fitnessButton.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        fitnessButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonFitnessMouseClicked(evt);
+                fitnessButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(jButtonFitness);
-        jButtonFitness.setBounds(60, 290, 80, 40);
+        jPanel1.add(fitnessButton);
+        fitnessButton.setBounds(300, 350, 120, 40);
 
-        jButtonAcademic.setBackground(new java.awt.Color(51, 153, 255));
-        jButtonAcademic.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonAcademic.setText("<html>Improve Academic  Performance<html>");
-        jButtonAcademic.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonAcademic.addMouseListener(new java.awt.event.MouseAdapter() {
+        mindImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/heart.png"))); // NOI18N
+        jPanel1.add(mindImg);
+        mindImg.setBounds(510, 260, 90, 90);
+
+        mindLabel.setFont(academicLabel.getFont());
+        mindLabel.setForeground(new java.awt.Color(255, 255, 255));
+        mindLabel.setText("<html>Achieve Peace of Mind<html>");
+        mindLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(mindLabel);
+        mindLabel.setBounds(510, 350, 90, 40);
+
+        mindButton.setBackground(new java.awt.Color(102, 255, 102));
+        mindButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        mindButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mindButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        mindButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonAcademicMouseClicked(evt);
+                mindButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(jButtonAcademic);
-        jButtonAcademic.setBounds(230, 280, 100, 50);
+        jPanel1.add(mindButton);
+        mindButton.setBounds(490, 350, 120, 40);
 
-        jButtonMind.setBackground(new java.awt.Color(102, 255, 102));
-        jButtonMind.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButtonMind.setText("<html>Achieve Peace of Mind<html>");
-        jButtonMind.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonMind.addMouseListener(new java.awt.event.MouseAdapter() {
+        continueButton.setBackground(new java.awt.Color(153, 153, 255));
+        continueButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
+        continueButton.setForeground(new java.awt.Color(255, 255, 255));
+        continueButton.setText("Continue");
+        continueButton.setBorder(new javax.swing.border.MatteBorder(null));
+        continueButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        continueButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonMindMouseClicked(evt);
+                continueButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(jButtonMind);
-        jButtonMind.setBounds(410, 280, 80, 50);
+        jPanel1.add(continueButton);
+        continueButton.setBounds(280, 460, 160, 30);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/tavern.jpg"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 560, 410);
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/tavern.jpg"))); // NOI18N
+        background.setMaximumSize(new java.awt.Dimension(700, 500));
+        background.setMinimumSize(new java.awt.Dimension(700, 500));
+        background.setPreferredSize(new java.awt.Dimension(700, 500));
+        jPanel1.add(background);
+        background.setBounds(0, 0, 700, 500);
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 560, 410));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 500));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonMouseClicked
+    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
         // TODO add your handling code here:
         System.exit(0);
-    }//GEN-LAST:event_CloseButtonMouseClicked
+    }//GEN-LAST:event_closeButtonMouseClicked
 
-    private void MinimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MinimizeButtonMouseClicked
+    private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
         // TODO add your handling code here:
         this.setState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_MinimizeButtonMouseClicked
-
-    private void jButtonContinueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinueMouseClicked
-        // TODO add your handling code here:
+    }//GEN-LAST:event_minimizeButtonMouseClicked
+    
+    private void continueButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_continueButtonMouseClicked
+        
         buttonPressedNo ++;
         if (buttonPressedNo==1){
-            if(Location.equals("register")){jLabeltext.setText("<html>What type of adventure are you after? <html>");}
-            if(Location.equals("UserHome")){jLabeltext.setText("<html>Knowledge must never cease. What adventure are we looking now? <html>");}
-            jLabelSwordAndShield.setVisible(true);
-            jLabelBook.setVisible(true);
-            jLabelHeart.setVisible(true);
-            jButtonFitness.setVisible(true);
-            jButtonAcademic.setVisible(true);
-            jButtonMind.setVisible(true);
-            jButtonContinue.setVisible(false);
-
+            if(this.Location.equals("register")){wizSpeach.setText("<html>What type of adventure are you after? <html>");}
+            if(this.Location.equals("newAdventure")){wizSpeach.setText("<html>What adventure are we looking after this time? <html>");}
+            academicImg.setVisible(true);
+            academicButton.setVisible(true);
+            academicLabel.setVisible(true);
+            fitnessImg.setVisible(true);
+            fitnessButton.setVisible(true);
+            mindImg.setVisible(true);
+            mindButton.setVisible(true);
+            mindLabel.setVisible(true);
+            continueButton.setVisible(false);
         }
-        if(buttonPressedNo == 3)
-        {
+        if(buttonPressedNo == 3){
+            //IF QUEST HAS AT LEAST ONE CHALL DONE IT JUMPS TUTORIAL
+            if( this.Location.equals("newAdventure") && anyChallDone() ){
+                GameplayUserHomeForm gmf = new GameplayUserHomeForm();
+                gmf.passData(this.user,this.Location);
+                gmf.setVisible(true);
+                gmf.pack();
+                gmf.setLocationRelativeTo(null);
+                this.dispose();  
+            }
+            else {
                 TutorialForm ttf = new TutorialForm();
                 ttf.setVisible(true);
                 ttf.pack();
                 ttf.setLocationRelativeTo(null);
-                ttf.passData(user, this.Quest ,Class);
-                this.dispose();    
+                ttf.passData(this.user, this.Quest ,this.Class,this.Location);
+                this.dispose();
+            }
         }
-    }//GEN-LAST:event_jButtonContinueMouseClicked
+    }//GEN-LAST:event_continueButtonMouseClicked
 
-    private void jButtonFitnessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonFitnessMouseClicked
-        PreparedStatement ps;
-        String username = this.user;
-        System.out.println(username);
-                  
-        String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";       
-        
-        try {
-            ps = My_CNX.getConnection().prepareStatement(query);
-            ps.setString(1, "fitness");
-            ps.setString(2, username);
-            if(ps.executeUpdate()!=0){JOptionPane.showMessageDialog(null, "Quest selected!");}
-        }catch (SQLException ex) {
-            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void fitnessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fitnessButtonMouseClicked
         this.Quest= "fitness";
+        UserData = new DataUser(this.user);
+        UserData.updateUserQuest(this.Quest);
+        JOptionPane.showMessageDialog(null, "Quest selected!");
+        
         buttonPressedNo ++;
         if (buttonPressedNo==2){
-            jLabeltext.setText("<html>Let's start! <html>");
-            jLabelSwordAndShield.setVisible(true);
-            jLabelBook.setVisible(false);
-            jLabelHeart.setVisible(false);
-            jButtonFitness.setVisible(false);
-            jButtonAcademic.setVisible(false);
-            jButtonMind.setVisible(false);
-            jButtonContinue.setVisible(true);
+            wizSpeach.setText("<html>Let's start! <html>");
+            academicImg.setVisible(false);
+            academicButton.setVisible(false);
+            academicLabel.setVisible(false);
+            fitnessImg.setVisible(true);
+            fitnessButton.setVisible(false);
+            mindImg.setVisible(false);
+            mindButton.setVisible(false);
+            mindLabel.setVisible(false);
+            continueButton.setVisible(true);
         }
-    }//GEN-LAST:event_jButtonFitnessMouseClicked
+    }//GEN-LAST:event_fitnessButtonMouseClicked
 
-    private void jButtonAcademicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAcademicMouseClicked
-       
-        PreparedStatement ps;
-        String username = this.user;
-        String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";
-
-        try{
-            ps = My_CNX.getConnection().prepareStatement(query);
-            ps.setString(1, "academic");
-            ps.setString(2, username);
-            if((ps.executeUpdate())!=0){JOptionPane.showMessageDialog(null, "Quest selected!");}
-        } catch (SQLException ex) {
-            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void academicButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_academicButtonMouseClicked
         this.Quest= "academic";
+        UserData = new DataUser(this.user);
+        UserData.updateUserQuest(this.Quest);
+        JOptionPane.showMessageDialog(null, "Quest selected!");
+        
         buttonPressedNo ++;
         if (buttonPressedNo==2){
-            jLabeltext.setText("<html>Let's start! <html>");
-            jLabelSwordAndShield.setVisible(false);
-            jLabelBook.setVisible(true);
-            jLabelHeart.setVisible(false);
-            jButtonFitness.setVisible(false);
-            jButtonAcademic.setVisible(false);
-            jButtonMind.setVisible(false);
-            jButtonContinue.setVisible(true);
+            wizSpeach.setText("<html>Let's start! <html>");
+            academicImg.setVisible(true);
+            academicButton.setVisible(false);
+            academicLabel.setVisible(false);
+            fitnessImg.setVisible(false);
+            fitnessButton.setVisible(false);
+            mindImg.setVisible(false);
+            mindButton.setVisible(false);
+            mindLabel.setVisible(false);
+            continueButton.setVisible(true);
         }
-    }//GEN-LAST:event_jButtonAcademicMouseClicked
+    }//GEN-LAST:event_academicButtonMouseClicked
 
-    private void jButtonMindMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonMindMouseClicked
-        PreparedStatement ps;
-        String username = this.user;
-        
-        String query = "UPDATE `users` SET `Quest`= ? WHERE `username` = ?";      
-        
-        try {
-            ps = My_CNX.getConnection().prepareStatement(query);
-            ps.setString(1, "mind");
-            ps.setString(2, username);
-             if(ps.executeUpdate()!=0){JOptionPane.showMessageDialog(null, "Quest selected!");}
-        }catch (SQLException ex) {
-            Logger.getLogger(BasicsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void mindButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mindButtonMouseClicked
         this.Quest = "mind";
-        buttonPressedNo ++;
-           
+        UserData = new DataUser(this.user);
+        UserData.updateUserQuest(this.Quest);
+        JOptionPane.showMessageDialog(null, "Quest selected!");
+        
+        buttonPressedNo ++;  
         if (buttonPressedNo==2){
-            jLabeltext.setText("<html>Let's start! <html>");
-            jLabelSwordAndShield.setVisible(false);
-            jLabelBook.setVisible(false);
-            jLabelHeart.setVisible(true);
-            jButtonFitness.setVisible(false);
-            jButtonAcademic.setVisible(false);
-            jButtonMind.setVisible(false);
-            jButtonContinue.setVisible(true);
+            wizSpeach.setText("<html>Let's start! <html>");
+            academicImg.setVisible(false);
+            academicButton.setVisible(false);
+            academicLabel.setVisible(false);
+            fitnessImg.setVisible(false);
+            fitnessButton.setVisible(false);
+            mindImg.setVisible(true);
+            mindButton.setVisible(false);
+            mindLabel.setVisible(false);
+            continueButton.setVisible(true);
         }
-    }//GEN-LAST:event_jButtonMindMouseClicked
-
+    }//GEN-LAST:event_mindButtonMouseClicked
+    
+    //CHECKS IS THE USER HAS DONE ANY CHALLENGES IN THE NEW SELECTED QUEST
+    private boolean anyChallDone(){
+        ChallData = new DataChall(this.user,this.Quest,false);
+        for( int i = 1 ; i < 11 ; i++){
+            if ( ChallData.isChallDone(i) ) atLeast1ChallDone = true; 
+        }
+        return atLeast1ChallDone;
+    }
     /**
      * @param args the command line arguments
      */
@@ -361,20 +387,22 @@ public class AdventureSelection extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CloseButton;
-    private javax.swing.JLabel MinimizeButton;
-    private javax.swing.JButton jButtonAcademic;
-    private javax.swing.JButton jButtonContinue;
-    private javax.swing.JButton jButtonFitness;
-    private javax.swing.JButton jButtonMind;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabelBook;
-    private javax.swing.JLabel jLabelHeart;
-    private javax.swing.JLabel jLabelSwordAndShield;
-    private javax.swing.JLabel jLabeltext;
+    private javax.swing.JButton academicButton;
+    private javax.swing.JLabel academicImg;
+    private javax.swing.JLabel academicLabel;
+    private javax.swing.JLabel background;
+    private javax.swing.JLabel closeButton;
+    private javax.swing.JPanel closeMinPanel;
+    private javax.swing.JButton continueButton;
+    private javax.swing.JButton fitnessButton;
+    private javax.swing.JLabel fitnessImg;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton mindButton;
+    private javax.swing.JLabel mindImg;
+    private javax.swing.JLabel mindLabel;
+    private javax.swing.JLabel minimizeButton;
+    private javax.swing.JLabel wizBallon;
+    private javax.swing.JLabel wizImg;
+    private javax.swing.JLabel wizSpeach;
     // End of variables declaration//GEN-END:variables
 }
