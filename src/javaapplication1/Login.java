@@ -2,8 +2,6 @@ package javaapplication1;
 
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,27 +10,37 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Gustavo
+ * @author Gustavo & Zublé
  */
 public class Login extends javax.swing.JFrame {
 
-    
-    private String user;
-    private String password;
+    DBDataUser UserData;
    
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
         setIcon();
+        getStartDBCimmunication();
     }
     
-    public void setIcon(){
+    /**
+     * starts the database communication 
+     */
+    private void getStartDBCimmunication(){
+        try {
+            DBCommunication.DBConnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);    
+        } 
+    }
+    
+    /**
+     * set app icon
+     */
+    private void setIcon(){
          setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
     }
-     
-    public void passData(String user) {
-        this.user = user;
-    }
+   
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -190,85 +198,61 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
-        // TODO add your handling code here:
         this.setState(JFrame.ICONIFIED);    
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        // TODO add your handling code here:
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
-        PreparedStatement st;
-        ResultSet rs;
-        String username = usernameText.getText();
-        String password = String.valueOf(pwField.getPassword());
+        String username = usernameText.getText(); 
+        String pw = String.valueOf(pwField.getPassword());
         
+        UserData= new DBDataUser();
+        UserData.setUsername(username);
         
-        String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
-       
-        try {
-            st = My_CNX.getConnection().prepareStatement(query);
-            System.out.println(st);
-            st.setString(1, username);
-            st.setString(2, password);
-            rs = st.executeQuery();
+        if ( UserData.loginVerification(pw) ){
+            GameplayUserHomeForm.setLocation("login");
+            GameplayUserHomeForm gmf = new GameplayUserHomeForm();
+            gmf.setVisible(true);
+            gmf.pack();
+            gmf.setLocationRelativeTo(null);
+            this.dispose();
+        }
+        else{
+             JOptionPane.showMessageDialog(null, "Invalid Username / Password", "Login Error",2);
+        }
+    }//GEN-LAST:event_loginButtonActionPerformed
+  
+    private void pwFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pwFieldKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String username = usernameText.getText();
+            String pw = String.valueOf(pwField.getPassword());
             
-            if (rs.next()){
-                this.user =username;
+            UserData= new DBDataUser();
+            UserData.setUsername(username);
+            
+            if ( UserData.loginVerification(pw) ){
+                GameplayUserHomeForm.setLocation("login");
                 GameplayUserHomeForm gmf = new GameplayUserHomeForm();
-                gmf.passData(username,"login");
                 gmf.setVisible(true);
                 gmf.pack();
                 gmf.setLocationRelativeTo(null);
                 this.dispose();
             }
             else{
-             JOptionPane.showMessageDialog(null, "Invalid Username / Password", "Login Error",2);
-            }  
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_loginButtonActionPerformed
-
-    private void pwFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pwFieldKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            PreparedStatement st;
-            ResultSet rs;
-            String username = usernameText.getText();
-            String password = String.valueOf(pwField.getPassword());
-
-            String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
-
-            try {
-                st = My_CNX.getConnection().prepareStatement(query);
-                System.out.println(st);
-                st.setString(1, username);
-                st.setString(2, password);
-                rs = st.executeQuery();
-
-                if (rs.next()){
-                    this.user =username;
-                    GameplayUserHomeForm gmf = new GameplayUserHomeForm();
-                    gmf.passData(username,"login");
-                    gmf.setVisible(true);
-                    gmf.pack();
-                    gmf.setLocationRelativeTo(null);
-                    this.dispose();
-                }
-                else{
                  JOptionPane.showMessageDialog(null, "Invalid Username / Password", "Login Error",2);
-                }  
-            } catch (SQLException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_pwFieldKeyPressed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-       // TODO add your handling code here:
         RegisterForm rgf = new RegisterForm();
         rgf.setVisible(true);
         rgf.pack();
@@ -277,12 +261,6 @@ public class Login extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_registerButtonActionPerformed
 
-    public String getUser(){
-        return user;
-    }
-     public String getPassword(){
-        return password;
-    }
 
     /**
      * @param args the command line arguments
@@ -313,10 +291,8 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login().setVisible(true);
         });
     }
 

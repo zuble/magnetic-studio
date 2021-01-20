@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javaapplication1;
 
 import java.awt.Toolkit;
-import javax.swing.JButton;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  *
@@ -17,8 +13,8 @@ import javax.swing.JLabel;
 public class WelcomeForm extends javax.swing.JFrame {
 
     private int buttonPressedNo = 0;
-    private String user;
-
+    DBDataUser UserData;
+    
     /**
      * Creates new form MenuForm
      */
@@ -26,11 +22,12 @@ public class WelcomeForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         setIcon();
+        UserData= new DBDataUser();
     }
-
-    public void passData(String user) {
-        this.user = user;
-    }
+    
+    /**
+     * set app icon
+     */
     public void setIcon(){
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
     }
@@ -155,6 +152,12 @@ public class WelcomeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        UserData.deleteUserAcc();
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 
@@ -178,20 +181,15 @@ public class WelcomeForm extends javax.swing.JFrame {
         }
         if (buttonPressedNo == 4) {
             wizSpeach.setText("<html>That's the spirit!<html>");
-
             continueButton.setText("Let's go!");
-
         }
         if (buttonPressedNo == 5) {
             wizSpeach.setText("<html>Let's get to the Tavern and talk there!<html>");
-
             continueButton.setText("Let's get a beer!");
-
         }
         if (buttonPressedNo == 6) {
             BasicsForm bsf = new BasicsForm();
             bsf.setVisible(true);
-            bsf.passData(this.user);
             bsf.pack();
             bsf.setLocationRelativeTo(null);
             this.dispose();
@@ -227,10 +225,8 @@ public class WelcomeForm extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new WelcomeForm().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new WelcomeForm().setVisible(true);
         });
     }
 

@@ -1,37 +1,30 @@
 package javaapplication1;
 
-
 import java.awt.Toolkit;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
- * @author Gustavo
+ * @author Gustavo & Legion
  */
 public class RegisterForm extends javax.swing.JFrame {
     
-    private String user;
-    /**
-     * Creates new form RegisterForm
-     */
+    DBDataUser UserData;
+    
     public RegisterForm() {
         initComponents();
         this.setLocationRelativeTo(null);
         setIcon();
     }
-    public void setIcon(){
+    
+    /**
+     * set app icon
+     */
+    private void setIcon(){
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
     }
 
@@ -235,54 +228,46 @@ public class RegisterForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clloseButtonMouseClicked
-        // TODO add your handling code here:
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_clloseButtonMouseClicked
 
     private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
-        // TODO add your handling code here:
         this.setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-        // TODO add your handling code here:
         String fname = fullnameField.getText();
         String uname = usernameFIeld.getText();
         String pass1 = String.valueOf(pwField.getPassword());
         String pass2 = String.valueOf(pwConfirmField.getPassword());
-
-        if(verifyFields()){
-            if (!checkUsername(uname)){
-                PreparedStatement ps1;
-                String registerUserQuery1  = "INSERT INTO `users`(`username`, `password`,`full_name`,`Class`,`Quest`,`wallet`,`wisdom`) VALUES (?,?,?,?,?,?,?)";
-                
-                try {
-                    ps1 = My_CNX.getConnection().prepareStatement(registerUserQuery1);
-                    ps1.setString(1, uname);
-                    ps1.setString(2, pass1);
-                    ps1.setString(3, fname);
-                    ps1.setString(4, "test");
-                    ps1.setString(5, "test");
-                    ps1.setInt(6, 0);
-                    ps1.setInt(7, 0);
-                    this.user = uname;
-                    if(ps1.executeUpdate()!=0){
-                        JOptionPane.showMessageDialog(null, "Your account has been created!");
-                        WelcomeForm mnf = new WelcomeForm();
-                        mnf.setVisible(true);
-                        mnf.passData(this.user);
-                        mnf.pack();
-                        mnf.setLocationRelativeTo(null);
-                        this.dispose();
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null, "Error: Check your information");
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(RegisterForm.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        String aux;
+        
+        UserData = new DBDataUser();
+        UserData.setUsername(uname);
+        
+        if( verifyFields(fname,uname,pass1,pass2) ){
+            aux = UserData.doRegistration(fname,pass1);
+            System.out.println(aux);
+            if( "sucess".equals(aux) ){
+                    JOptionPane.showMessageDialog(null, "Your account has been created!");
+                    WelcomeForm mnf = new WelcomeForm();
+                    mnf.setVisible(true);
+                    mnf.pack();
+                    mnf.setLocationRelativeTo(null);
+                    this.dispose();
             }
-        }  
+            if( "error-reg".equals(aux) ){
+                JOptionPane.showMessageDialog(null, "Error: Check your information");
+            }  
+            if( "error-username".equals(aux) ){
+                JOptionPane.showMessageDialog(null, "this username is already taken!", "Username Failed",2);
+            }
+        }
     }//GEN-LAST:event_registerButtonActionPerformed
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
@@ -294,41 +279,21 @@ public class RegisterForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelButtonMouseClicked
 
-    public boolean verifyFields(){
-        String fname = fullnameField.getText();
-        String uname = usernameFIeld.getText();
-        String pass1= String.valueOf(pwField.getPassword());
-        String pass2 = String.valueOf(pwConfirmField.getPassword());
-
-        if ((fname.trim().equals("")) || (uname.trim().equals("")) ||(pass1.trim().equals(""))|| (pass2.trim().equals(""))){
+    public boolean verifyFields(String uname, String fname , String p1 , String p2){
+        if ((fname.trim().equals("")) || (uname.trim().equals("")) ||(p1.trim().equals(""))|| (p2.trim().equals(""))){
             JOptionPane.showMessageDialog(null, "One or more fields are empty!");
             return false;
         }
-        else if (!pass1.equals(pass2)){
+        else if (!p1.equals(p2)){
             JOptionPane.showMessageDialog(null, "Password doesn't match!", "Confirm password", 2);
             return false;
         }
-        else{return true;}
+        else{
+            return true;
+        }
     }
        
-    public boolean checkUsername (String username){
-        PreparedStatement st;
-        ResultSet rs;
-        boolean username_exist = false;
-        String query = "SELECT * FROM `users` WHERE `username` = ? ";
-        try {
-            st= My_CNX.getConnection().prepareCall(query);
-            st.setString(1, username);
-            rs= st.executeQuery();
-            if(rs.next()){
-                JOptionPane.showMessageDialog(null, "this username is already taken!", "Username Failed",2);
-                username_exist = true;
-            }   
-        }catch (SQLException ex) {
-            Logger.getLogger(RegisterForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return username_exist;
-    }
+    
     /**
      * @param args the command line arguments
      */

@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javaapplication1;
 
 
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 
@@ -16,17 +14,50 @@ import javax.swing.JFrame;
  */
 public class TutorialForm extends javax.swing.JFrame {
 
+    
+    private final String user , Quest , Class;
+    private String Location;
+    private int buttonPressedNo=0;
+    DBDataUser UserData;
+    
     /**
      * Creates new form TutorialForm
      */
-    private String user;
-    private String Quest;
-    private String Class , Location;
-    private int buttonPressedNo=0;
-    
     public TutorialForm() {
+        UserData = new DBDataUser();
+        UserData.setDataUser();
+        this.user = UserData.getUsername();
+        this.Quest = UserData.getUserQuest();
+        this.Class = UserData.getUserClass();
+        
         initComponents();
         setIcon(); 
+        setInitialVisuals();
+        setWizWelcome();
+    }
+    
+    /**
+     * sets the location to the class that call TutorialForm
+     * @param Location 
+     */
+    public void setLocation(String Location){
+        this.Location = Location;
+    }
+    
+    /**
+     * sets the welcome speach of the wizard according to the location that the users comes from
+     */
+    private void setWizWelcome() {
+        if ("fitness".equals(Quest)) wizSpeach.setText("<html> Welcome to the Fighters Guild! Here I will train you to achieve your fitness goal and become a healthier warrior!<html>");
+        if ("academic".equals(Quest)) wizSpeach.setText("<html> Welcome the College of Wizardry and Science! Here you will learn from a greatest mind how to achieve academic success!<html>");
+        if ("mind".equals(Quest)) wizSpeach.setText("<html> Welcome to the Arcane Order of the Mind! All the wisemen from our world gather here to seek peace and share their teachings.<html>");
+    }
+    
+    /**
+     * sets the inital visibility for labels/buttons and images
+     */
+    private void setInitialVisuals(){
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Quest+"Center.png")));
         userLabel.setVisible(false);
         userInfoPanel.setVisible(false);
         userButton.setVisible(false);
@@ -34,22 +65,10 @@ public class TutorialForm extends javax.swing.JFrame {
         catalfButton.setVisible(false);
     }
     
-    public void passData(String user, String Quest, String Class, String Location) {
-        this.user = user;
-        this.Quest = Quest;
-        this.Class = Class;
-        this.Location = Location;
-        System.out.println(Location+Quest);
-        
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Quest+"Center.png")));
-        
-        if ("fitness".equals(Quest)) wizSpeach.setText("<html> Welcome to the Fighters Guild! Here I will train you to achieve your fitness goal and become a healthier warrior!<html>");
-        if ("academic".equals(Quest)) wizSpeach.setText("<html> Welcome the College of Wizardry and Science! Here you will learn from a greatest mind how to achieve academic success!<html>");
-        if ("mind".equals(Quest)) wizSpeach.setText("<html> Welcome to the Arcane Order of the Mind! All the wisemen from our world gather here to seek peace and share their teachings.<html>");
-        
-    }
-    
-    public void setIcon(){
+    /**
+     * set app icon
+     */
+    private void setIcon(){
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png"))); 
     }
 
@@ -248,6 +267,11 @@ public class TutorialForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 
@@ -256,7 +280,6 @@ public class TutorialForm extends javax.swing.JFrame {
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
     private void continueButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_continueButtonMouseClicked
-        
         if( ("register".equals(this.Location)) == true ){   
             switch (buttonPressedNo) {
                 case 0:
@@ -312,8 +335,8 @@ public class TutorialForm extends javax.swing.JFrame {
                     buttonPressedNo++;
                     break;
                 case 8:
+                    GameplayUserHomeForm.setLocation("register");
                     GameplayUserHomeForm gmf = new GameplayUserHomeForm();
-                    gmf.passData(this.user,"register");
                     gmf.setVisible(true);
                     gmf.pack();
                     gmf.setLocationRelativeTo(null);
@@ -355,7 +378,7 @@ public class TutorialForm extends javax.swing.JFrame {
                     break;
                 case 2:
                     GameplayUserHomeForm gmf = new GameplayUserHomeForm();
-                    gmf.passData(this.user,this.Location);
+                    gmf.setLocation(this.Location);
                     gmf.setVisible(true);
                     gmf.pack();
                     gmf.setLocationRelativeTo(null);
@@ -395,10 +418,8 @@ public class TutorialForm extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TutorialForm().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TutorialForm().setVisible(true);
         });
     }
 

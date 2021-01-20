@@ -2,13 +2,16 @@ package javaapplication1;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
 /**
  *
- * @author Legion
+ * @author Zublé & Henrique
  */
 public class GameplayWizardHomeForm extends javax.swing.JFrame {
    
@@ -18,73 +21,64 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
     boolean[] ItemsToBuy = {false,false,false,false} ;
     boolean[] ItemsBackpack = {false,false,false,false} ;
     boolean wizspeach = false , atLeast1BougtItem = false;
-    DataUser UserData;
-    DataItem ItemData;
+    DBDataUser UserData;
+    DBDataItem ItemData;
     Random rand = new Random();
-    
-  
+   
     /**
      * Creates new form gameplayForm
      */
     public GameplayWizardHomeForm() {
         initComponents();
         setIcon();
+        setInitialVisuals();
+        
+        UserData= new DBDataUser();
+        setUser();
+        
+        ItemData = new DBDataItem();
+        setItems("passdata");
+        setItems("wizitems");
+        wizardItemsTimer(8000);
+        
+        setWizWelcome();
+        wizardLabelsTimer(8000);
     }
     
+    /**
+     * set user information panel, imgs and background
+     */
+    private void setUser(){
+        this.user = UserData.getUsername();
+        this.Class = UserData.getUserClass();
+        this.wallet = UserData.getUserWallet();
+        this.wisdom = UserData.getUserWisdom();
+        
+        coinLabel.setText(String.valueOf(this.wallet));
+        wisdomLabel.setText(String.valueOf(this.wisdom));
+        userLabel.setText(this.user+" the "+this.Class);
+        
+        userButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Class+"2.png")));
+        userButton.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Class+"2.png")));
+        
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/witchroom.png")));
+        
+        if(wisdom <= 30){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage1.png"))); }
+        if((wisdom >= 40) && (wisdom <= 70)){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage2.png"))); }
+        if(wisdom >= 80){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage3.png"))); }
+    }
+    
+    /**
+     * set app icon
+     */
     private void setIcon(){
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png"))); 
     }
     
-    public void wizardLabelsTimer(int time){
-        Timer timer = new Timer(time, (ActionEvent e) -> {
-            wizBallonWelcome.setVisible(false);
-            wizSpeachWelcome.setVisible(false);
-            wizInventoryPanel.setVisible(true);
-            wizSpecialMessage.setVisible(true);
-            wizspeach = true;
-            
-            userLabel.setVisible(true);
-            userInfoPanel.setVisible(true);
-            userButton.setVisible(true);
-            
-            dragonButton.setVisible(true);     
-        });
-        timer.setRepeats(false);
-        timer.start();
-    } 
-    
-    public void wizardItemsTimer(boolean[] ItemsToShow , int Time){
-        Timer timer = new Timer(Time, (ActionEvent e) -> {
-            setItems("wizitems");
-            wizInventoryPanel.setVisible(true);
-        });
-        timer.setRepeats(false);
-        timer.start();
-    }   
-    
-    public void wizardSpecialMessageTimer(int time){
-        Timer timer = new Timer(time, (ActionEvent e) -> {
-            wizBallonWelcome.setVisible(false);
-            wizSpeachWelcome.setVisible(false);
-        });
-        timer.setRepeats(false);
-        timer.start();
-    } 
-    
-    public void passData(String user) {
-        //SET USER INFO
-        this.user = user;
-        setUser();
-        
-        //SET ITEMS 
-        setItems("passdata");
-        setItems("wizitems");
-        
-        //SET BACKGROUND/USER CLASS IMAGE
-        setImgs();
-        
-        //SET WIZARD SPEACH + BUTTONS DISABLE
-        setWizWelcome();
+    /**
+     * sets the inital visibility for labels/buttons and images
+     */
+    private void setInitialVisuals(){
         wizBallonWelcome.setVisible(true);
         wizSpeachWelcome.setVisible(true);
         
@@ -100,41 +94,14 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         catSpeach.setVisible(false);
         
         wizSpecialMessage.setVisible(false);
-        
-        //SETS THE DISPONIBLE WIZARD ITEMS AFTER TIME OVER
-        wizardItemsTimer(ItemsToBuy,8000);
-        wizardLabelsTimer(8000);
     }
     
-    private void setUser(){
-        //GETS ALL USER DATA NEEDED
-        UserData = new DataUser(this.user);  
-        this.Class = UserData.getUserClass();
-        this.wallet = UserData.getUserWallet();
-        this.wisdom = UserData.getUserWisdom();
-        
-        coinLabel.setText(String.valueOf(this.wallet));
-        wisdomLabel.setText(String.valueOf(this.wisdom));
-        userLabel.setText(this.user+" the "+this.Class);
-    }
-    
-    private void setImgs(){
-        userButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Class+"2.png")));
-        userButton.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Class+"2.png")));
-        
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/witchroom.png")));
-        
-        UserData = new DataUser(user);
-        this.wisdom = UserData.getUserWisdom();
-        if(wisdom <= 30){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage1.png"))); }
-        if((wisdom >= 40) && (wisdom <= 70)){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage2.png"))); }
-        if(wisdom >= 80){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage3.png"))); }
-    }
-    
+    /**
+     * sets items information and visibility according to the function that calls setItems
+     * @param Location 
+     */
     private void setItems(String Location){
         if( "passdata".equals(Location) ){
-            //INITIALIZE DATAITEM
-            ItemData = new DataItem(this.user);
             //SETS ITEMS NOT VISIBLE 
             wizInventoryPanel.setVisible(false);
             userInventoryPanel.setVisible(false);
@@ -170,8 +137,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
             else wizItem4Panel.setVisible(false);
         }
         if( "backpack".equals(Location) ){
-            //INITIALIZE DataItem AND POPULATES ITEMSBACKPACK 
-            ItemData = new DataItem(this.user);
+            //POPULATES ITEMSBACKPACK 
             ItemsBackpack = ItemData.areItemsInBackpack(ItemsBackpack); 
             //SET USER ITEMS VISIBLE
             if(ItemsBackpack[0]){item1Inventory.setVisible(true);}
@@ -185,20 +151,63 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         } 
     }
     
+    /**
+     * sets the welcome speach of the wizard according if the user has any bought item or not 
+     */
     private void setWizWelcome(){
-        if( anyBoughtItem() ){
+        if( ItemData.anyItemBought() ){
             wizSpeachWelcome.setText("<html>Welcome "+this.user+"<html>. Always a joy to see you here :) ");
         }
         else wizSpeachWelcome.setText("<html> Here is my humble source of enlighment and knowledge, my house. You can get special crystals and some other threats :) <html>");
     }
     
-    private boolean anyBoughtItem(){
-        ItemData = new DataItem(this.user);
-        for( int i = 1 ; i < 5 ; i++){
-            if ( ItemData.isItemInBackpack(i) ) atLeast1BougtItem = true; 
-        }
-        return atLeast1BougtItem;
-    }
+    /**
+     * a timer for the wizard speach to be visible and for what will become visible after
+     * @param time 
+     */
+    private void wizardLabelsTimer(int time){
+        Timer timer = new Timer(time, (ActionEvent e) -> {
+            wizBallonWelcome.setVisible(false);
+            wizSpeachWelcome.setVisible(false);
+            wizInventoryPanel.setVisible(true);
+            wizSpecialMessage.setVisible(true);
+            wizspeach = true;
+            
+            userLabel.setVisible(true);
+            userInfoPanel.setVisible(true);
+            userButton.setVisible(true);
+            
+            dragonButton.setVisible(true);     
+        });
+        timer.setRepeats(false);
+        timer.start();
+    } 
+    
+    /**
+     * a timer for the wizard items to be visible
+     * @param Time 
+     */
+    private void wizardItemsTimer(int Time){
+        Timer timer = new Timer(Time, (ActionEvent e) -> {
+            setItems("wizitems");
+            wizInventoryPanel.setVisible(true);
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }   
+    
+    /**
+     * a timer for the wizard special message to be visible
+     * @param time 
+     */
+    public void wizardSpecialMessageTimer(int time){
+        Timer timer = new Timer(time, (ActionEvent e) -> {
+            wizBallonWelcome.setVisible(false);
+            wizSpeachWelcome.setVisible(false);
+        });
+        timer.setRepeats(false);
+        timer.start();
+    } 
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -809,8 +818,8 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void dragonButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragonButtonMouseClicked
+        GameplayUserHomeForm.setLocation("WizHome");
         GameplayUserHomeForm UserHomeTravel = new GameplayUserHomeForm();
-        UserHomeTravel.passData(this.user,"WizHome");
         UserHomeTravel.setVisible(true);
         this.dispose();
          
@@ -1073,6 +1082,11 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_dragonButtonMouseExited
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 

@@ -13,6 +13,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,33 +22,263 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
- * @author Legion
+ * @author Zublé & Henrique
  */
 public class GameplayUserHomeForm extends javax.swing.JFrame {
-   
-    public String user;
-    private String Quest , Class , Chall_text;
+    
+    public static String Location;
+    private String user , Quest , Class , Chall_text ;
     private int Chall_id , Chall_coins , Chall_wisdom;
     private int wallet , wisdom;
     private int buttonCat1 = 0 , buttonUser = 0 , buttonBackpack = 0;
     private final String[] quests = {"academic" , "fitness" , "mind"};
     private boolean challOn , allChallDone;
     boolean[] ItemsBackpack = {false,false,false,false} ;
-    DataChall ChallData;
-    DataUser UserData;
-    DataItem ItemData;
+    DBDataChall ChallData;
+    DBDataUser UserData;
+    DBDataItem ItemData;
+    DBCommunication DBaux;
     Clip clipaux;
     
     public GameplayUserHomeForm() {
         initComponents();
         setIcon();
+        setInitialVisuals();
+        
+        //INITIALIZE DATAUSER
+        UserData= new DBDataUser();
+        UserData.setDataUser();
+        
+        //INITIALIZE DATAITEM
+        ItemData = new DBDataItem();
+        
+        //INITIALIZE DATACHALL
+        ChallData = new DBDataChall();
+        
+        setUser();
+        
+        //SET USER INVENTORY ITEMS
+        setInventoryItems("passdata", Location);
+        setInventoryChalls();
+        
+        //SET USER BACKGROUND AND WISDOM MUSHIES IMAGES
+        setImgs("background");
+        setImgs("mushie");
+        
+        //FILLS THE RANK TABLE FOR THE FRIST TIME 
+        fillRank(false,quests[0]);
+        fillRank(false,quests[1]);
+        fillRank(false,quests[2]);
+        
+        setWizWelcome(GameplayUserHomeForm.Location);
     }
     
+    /**
+     * sets the location to the class that call GameplayUserHome
+     * @param location
+     */
+    public static void setLocation(String location){
+        Location = location;
+    }
+    
+    /**
+     * set app icon
+     */
     private void setIcon(){
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png"))); 
     }
     
-    public void wizardLabelsTimer(int Time, String Location){
+    /**
+     * set user information panel and class img
+     */
+    private void setUser(){
+        //GETS ALL USER DATA NEEDED
+        this.Class = UserData.getUserClass();
+        this.Quest = UserData.getUserQuest();
+        this.wallet = UserData.getUserWallet();
+        this.wisdom = UserData.getUserWisdom();
+        
+        userButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Class+"2.png")));
+        
+        //SETS USER INFO PANEL ( COINS + WISDOM )
+        coinLabel.setText(String.valueOf(this.wallet));
+        wisdomLabel.setText(String.valueOf(this.wisdom));
+        userLabel.setText(this.user+" the "+this.Class);
+    }
+    
+    /**
+     * sets the inital visibility for labels/buttons and images
+     */
+    private void setInitialVisuals(){
+        //SET ALL BUTTONS INVISIBLE UNTIL WIZARD FINHISH WELCOME SPEACH 
+        catalfButton.setVisible(false);
+        catalfRankDisplay.setVisible(false);
+        rankImg.setVisible(false);
+        wizHouseButton.setVisible(false);
+        
+        userButton.setVisible(false);
+        userLabel.setVisible(false);
+        userInfoPanel.setVisible(false);
+        
+        newAdventureButton.setVisible(false);
+        completeButton.setVisible(false);
+        challengeButton.setVisible(false);
+        wizBallonChall.setVisible(false);
+        wizSpeachChall.setVisible(false);
+        
+        userInventoryPanel.setVisible(false);
+    }
+    
+    /**
+     * sets the background img acording to the special item2 state 
+     * sets the mushie icon according to the wisdom points
+     * @param IMG 
+     */
+    private void setImgs( String IMG ){
+        if( "background".equals(IMG) ){
+            //SET RUSSIA BACKGROUND AND ACCORDING FONT IF ITEM2 IS ACTIVED 
+            if("ON".equals(ItemData.getItemState(2)) && ( "WizHome".equals(GameplayUserHomeForm.Location) || "UserHome".equals(GameplayUserHomeForm.Location) ) ) {
+                background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Russia.gif")));
+                
+                catalfButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+                userLabel.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+                wizHouseButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+                newAdventureButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+                completeButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+                challengeButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+                wisdomLabel.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+                coinLabel.setFont(new java.awt.Font("Futura Md BT", 1, 15));
+            }
+            //SET THE USER QUEST BACKGROUND AND FONT 
+            else {
+                background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Quest+"Center.png")));
+                
+                catalfButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
+                userLabel.setFont(new java.awt.Font("Book Antiqua", 1, 14));
+                wizHouseButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
+                newAdventureButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
+                completeButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
+                challengeButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
+                wisdomLabel.setFont(new java.awt.Font("Book Antiqua", 1, 18));
+                coinLabel.setFont(new java.awt.Font("Book Antiqua", 1, 18));
+            }
+        } 
+        //SET MUSHIE SIZE
+        if( "mushie".equals(IMG) ){
+            
+            this.wisdom = UserData.getUserWisdom();
+            if(this.wisdom <= 40){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage1.png"))); }
+            if((this.wisdom > 40) && (this.wisdom <= 80)){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage2.png"))); }
+            if(this.wisdom > 80){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage3.png"))); }
+        }
+    }
+    
+    /**
+     * sets the inventory items tooltip and visibility according to what the user has bought
+     * sets the background of the speacial item 2 off everytime it coems from login or a newadventure
+     * @param functionLoc
+     * @param classLoc 
+     */
+    private void setInventoryItems(String functionLoc , String classLoc){ 
+       
+        if( ItemData.isItemInBackpack(2) && ( "newAdventure".equals(classLoc) || "login".equals(classLoc) ) ){
+            ItemData.setItemState(2, "OFF");
+        }
+        
+        //SETS NAME IN TOOLTIP FOR EACH ITEM
+        if( "passdata".equals(functionLoc) ){
+            ItemData.getDataItem(1);
+            Item1Inventory.setToolTipText(ItemData.getItemName());
+            Item1Inventory.setVisible(false);
+            ItemData.getDataItem(2);
+            Item2Inventory.setToolTipText(ItemData.getItemName());
+            Item2Inventory.setVisible(false);
+            ItemData.getDataItem(3);
+            Item3Inventory.setToolTipText(ItemData.getItemName());
+            Item3Inventory.setVisible(false);
+            ItemData.getDataItem(4);
+            Item4Inventory.setToolTipText(ItemData.getItemName());
+            Item4Inventory.setVisible(false);
+        }
+        
+        if( "backpack".equals(functionLoc) ){
+            //POPULATES ITEMSBACKPACK 
+            ItemsBackpack = ItemData.areItemsInBackpack(ItemsBackpack); 
+            
+            //SET USER ITEMS VISIBLE
+            if(ItemsBackpack[0]){Item1Inventory.setVisible(true);}
+            else Item1Inventory.setVisible(false); 
+            if(ItemsBackpack[1]){Item2Inventory.setVisible(true);}
+            else Item2Inventory.setVisible(false); 
+            if(ItemsBackpack[2]){Item3Inventory.setVisible(true);}
+            else Item3Inventory.setVisible(false); 
+            if(ItemsBackpack[3]){Item4Inventory.setVisible(true);}
+            else Item4Inventory.setVisible(false);
+        }
+    }
+    
+    /**
+     * sets the inventory challs that the user has done
+     */
+    private void setInventoryChalls(){
+        //SETS WHICH CHALLS WERE DONE BY THE USER
+        chall10.setVisible(ChallData.isChallDone(1));
+        chall1.setVisible(ChallData.isChallDone(1));
+        chall2.setVisible(ChallData.isChallDone(2));
+        chall3.setVisible(ChallData.isChallDone(3));
+        chall4.setVisible(ChallData.isChallDone(4));
+        chall5.setVisible(ChallData.isChallDone(5));
+        chall6.setVisible(ChallData.isChallDone(6));
+        chall7.setVisible(ChallData.isChallDone(7));
+        chall8.setVisible(ChallData.isChallDone(8));
+        chall9.setVisible(ChallData.isChallDone(9));
+    }
+    
+    /**
+     * sets the welcome speach of the wizard according to the location that the users comes from and if all challs are done
+     * @param Location 
+     */
+    private void setWizWelcome(String Location){
+        //TIMER FOR THE WELCOME BALOON/SPEACH
+        allChallDone = ChallData.allChallDone();
+        System.out.println("allChallDone= "+allChallDone);
+        
+        if( allChallDone && ( "login".equals(Location) || "newAdventure".equals(Location) ) ){
+            wizSpeachWelcome.setText("<html> You got everything from here already. Maybe time for a new adventure?<html>");
+            System.out.println("1");
+            wizardLabelsTimer(5000,"allchallsdone");
+        }
+        if( allChallDone && "WizHome".equals(Location)){
+            wizBallonWelcome.setVisible(false);
+            wizSpeachWelcome.setVisible(false);
+            System.out.println("2");
+            wizardLabelsTimer(1,"allchallsdone"); 
+        }
+        if( !allChallDone && ("WizHome".equals(Location) || "login".equals(Location)) || "newAdventure".equals(Location) || "register".equals(Location) ){
+            //SET WIZARD WELCOME MESSAGE 
+            if("login".equals(Location)){
+                if (quests[0].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome back to the College of Wizardry and Science! <html>");}
+                if (quests[1].equals(Quest)){wizSpeachWelcome.setText("<html> Welcome back to the Fighters Guild!<html>");}
+                if (quests[2].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome back to the Arcane Order of the Mind!<html>");}
+            }
+            if("register".equals(Location) || "newAdventure".equals(Location)){
+                if (quests[0].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome to the College of Wizardry and Science! <html>");}
+                if (quests[1].equals(Quest)){wizSpeachWelcome.setText("<html> Welcome to the Fighters Guild!<html>");}
+                if (quests[2].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome to the Arcane Order of the Mind!<html>");}
+            }
+            if("WizHome".equals(Location)){
+                wizSpeachWelcome.setText("<html> Ocapse is a good driver , isn't he ? :)<html>");
+            }
+            wizardLabelsTimer(3000,"passdata");
+        } 
+    }
+    
+    /**
+     * a timer for the wizard speach to be visible and for what will become visible after according to the location
+     * @param Time
+     * @param Location 
+     */
+    private void wizardLabelsTimer(int Time, String Location){
         Timer timer = new Timer(Time, (ActionEvent e) -> {
             if( "passdata".equals(Location) ){
                 wizBallonWelcome.setVisible(false);
@@ -79,9 +310,46 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         });
         timer.setRepeats(false);
         timer.start();
-    }    
+    } 
     
-    public void fillRank( boolean update , String Quest ){
+    /**
+     * play or stop the clip
+     * @param dowhat
+     * @param clip 
+     */
+    private void setSound(String dowhat , Clip clip){
+        if ("play".equals(dowhat)) {
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+        if ("stop".equals(dowhat)) {
+            clip.stop();
+        }
+    }
+    
+    /**
+     * updates the coins display in the user painel
+     */
+    private void updateCoinsDisplay(){
+        //UserData.setDataUser();
+        this.wallet = UserData.getUserWallet();
+        coinLabel.setText(String.valueOf(this.wallet));
+    }
+    
+    /**
+     * updates the wisdom points in the user painel and checks if the mushie has grown
+     */
+    private void updateWisdomDisplay(){
+        this.wisdom = UserData.getUserWisdom();
+        wisdomLabel.setText(String.valueOf(this.wisdom));
+        
+        setImgs("mushie");
+    }
+    
+    @SuppressWarnings("null")
+    public void fillRank( boolean update , String Quest ) {
+        Connection auxConn; 
+        auxConn = DBCommunication.getPlugVariable();
         PreparedStatement st;
         ResultSet rs;
         DefaultTableModel tb1Model = null;
@@ -94,7 +362,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         //UPDATES EVERY TABLE QUEST FRIST TIME 
         if(!update){
             try {
-                st = My_CNX.getConnection().prepareStatement(query);
+                st = auxConn.prepareStatement(query);
                 st.setString(1,Quest);
                 rs = st.executeQuery();
                 while(rs.next()){
@@ -111,7 +379,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
             int rowCount = tb1Model.getRowCount();
             for (int i = rowCount - 1; i >= 0; i--) { tb1Model.removeRow(i);}
             try {
-                st = My_CNX.getConnection().prepareStatement(query);
+                st = auxConn.prepareStatement(query);
                 st.setString(1,Quest);
                 rs = st.executeQuery();
                 while(rs.next()){
@@ -122,223 +390,6 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }        
         }
-    }
-    
-    public void passData(String user, String Location) {
-        //SET USER INFO
-        this.user = user;
-        setUser();
-        
-        //SET ALL BUTTONS INVISIBLE UNTIL WIZARD FINHISH WELCOME SPEACH 
-        catalfButton.setVisible(false);
-        catalfRankDisplay.setVisible(false);
-        rankImg.setVisible(false);
-        wizHouseButton.setVisible(false);
-        
-        userButton.setVisible(false);
-        userLabel.setVisible(false);
-        userInfoPanel.setVisible(false);
-        
-        newAdventureButton.setVisible(false);
-        completeButton.setVisible(false);
-        challengeButton.setVisible(false);
-        wizBallonChall.setVisible(false);
-        wizSpeachChall.setVisible(false);
-        
-        //FILLS THE RANK TABLE FOR THE FRIST TIME 
-        fillRank(false,quests[0]);
-        fillRank(false,quests[1]);
-        fillRank(false,quests[2]);
-        
-        //SET USER INVENTORY ITEMS
-        setInventoryItems("passdata", Location);
-        setInventoryChalls();
-        
-        //SET BACKGROUND,USER AND MUSHIES IMAGES
-        setImgs("background");
-        setImgs("user");
-        setImgs("mushie");
-        
-        //TIMER FOR THE WELCOME BALOON/SPEACH
-        ChallData = new DataChall(this.user,this.Quest,false);
-        allChallDone = ChallData.allChallDone();
-        System.out.println("allChallDone= "+allChallDone);
-        
-        if( allChallDone && ( "login".equals(Location) || "newAdventure".equals(Location) ) ){
-            wizSpeachWelcome.setText("<html> You got everything from here already. Maybe time for a new adventure?<html>");
-            System.out.println("1");
-            wizardLabelsTimer(5000,"allchallsdone");
-        }
-        if( allChallDone && "WizHome".equals(Location)){
-            wizBallonWelcome.setVisible(false);
-            wizSpeachWelcome.setVisible(false);
-            System.out.println("2");
-            wizardLabelsTimer(1,"allchallsdone"); 
-        }
-        if( !allChallDone && ("WizHome".equals(Location) || "login".equals(Location)) || "newAdventure".equals(Location) || "register".equals(Location) ){
-            //SET WIZARD WELCOME MESSAGE 
-            setWizWelcome(Location);
-            System.out.println("3");
-            wizardLabelsTimer(3000,"passdata");
-        }  
-    }
-    
-    private void setUser(){
-        //GETS ALL USER DATA NEEDED
-        UserData = new DataUser(this.user);  
-        this.Class = UserData.getUserClass();
-        this.Quest = UserData.getUserQuest();
-        this.wallet = UserData.getUserWallet();
-        this.wisdom = UserData.getUserWisdom();
-        
-        coinLabel.setText(String.valueOf(this.wallet));
-        wisdomLabel.setText(String.valueOf(this.wisdom));
-        userLabel.setText(this.user+" the "+this.Class);
-    }
-    
-    private void setImgs( String IMG ){
-        if( "background".equals(IMG) ){
-            //INITIALIZE DATAITEM
-            ItemData = new DataItem(this.user);
-            
-            //SET RUSSIA BACKGROUND IF ITEM2 ACTIVED AND ACCORDING FONT
-            if("ON".equals(ItemData.getItemState(2))) {
-                background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Russia222.gif")));
-                
-                catalfButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-                userLabel.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-                wizHouseButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-                newAdventureButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-                completeButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-                challengeButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-                wisdomLabel.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-                coinLabel.setFont(new java.awt.Font("Futura Md BT", 1, 15));
-            }
-            //SET THE USER QUEST BACKGROUND AND ACCORDING FONT 
-            else {
-                background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Quest+"Center.png")));
-                
-                catalfButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
-                userLabel.setFont(new java.awt.Font("Book Antiqua", 1, 14));
-                wizHouseButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
-                newAdventureButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
-                completeButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
-                challengeButton.setFont(new java.awt.Font("Book Antiqua", 1, 14));
-                wisdomLabel.setFont(new java.awt.Font("Book Antiqua", 1, 18));
-                coinLabel.setFont(new java.awt.Font("Book Antiqua", 1, 18));
-            }
-        }
-        //SET USER IMAGE
-        if( "user".equals(IMG) ) userButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/"+this.Class+"2.png")));
-        //SET MUSHIE SIZE
-        if( "mushie".equals(IMG) ){
-            
-            this.wisdom = UserData.getUserWisdom();
-            if(this.wisdom <= 40){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage1.png"))); }
-            if((this.wisdom > 40) && (this.wisdom <= 80)){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage2.png"))); }
-            if(this.wisdom > 80){mushieImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mushies_stage3.png"))); }
-        }
-    }
-    
-    private void setInventoryItems(String functionLoc , String classLoc){ 
-        //INITIALIZE DATAITEM
-        ItemData = new DataItem(this.user);
-        
-        //EVERYTIME IT COME FROM A NEW ADVENTURE OR LOGIN IT SETS THE ITEM2STATE TO OFF (RUSSIA)
-        if( ItemData.isItemInBackpack(2) && ( "newAdventure".equals(classLoc) || "login".equals(classLoc) ) ){
-            ItemData.setItemState(2, "OFF");
-        }
-        
-        //SETS NAME IN TOOLTIP FOR EACH ITEM
-        if( "passdata".equals(functionLoc) ){
-            ItemData.getDataItem(1);
-            Item1Inventory.setToolTipText(ItemData.getItemName());
-            Item1Inventory.setVisible(false);
-            ItemData.getDataItem(2);
-            Item2Inventory.setToolTipText(ItemData.getItemName());
-            Item2Inventory.setVisible(false);
-            ItemData.getDataItem(3);
-            Item3Inventory.setToolTipText(ItemData.getItemName());
-            Item3Inventory.setVisible(false);
-            ItemData.getDataItem(4);
-            Item4Inventory.setToolTipText(ItemData.getItemName());
-            Item4Inventory.setVisible(false);
-            
-            //SETS ITEMS NOT VISIBLE
-            userInventoryPanel.setVisible(false);
-        }
-        
-        if( "backpack".equals(functionLoc) ){
-            //POPULATES ITEMSBACKPACK 
-            ItemsBackpack = ItemData.areItemsInBackpack(ItemsBackpack); 
-            
-            //SET USER ITEMS VISIBLE
-            if(ItemsBackpack[0]){Item1Inventory.setVisible(true);}
-            else Item1Inventory.setVisible(false); 
-            if(ItemsBackpack[1]){Item2Inventory.setVisible(true);}
-            else Item2Inventory.setVisible(false); 
-            if(ItemsBackpack[2]){Item3Inventory.setVisible(true);}
-            else Item3Inventory.setVisible(false); 
-            if(ItemsBackpack[3]){Item4Inventory.setVisible(true);}
-            else Item4Inventory.setVisible(false);
-        }
-    }
-    
-    public void setInventoryChalls(){
-        //SETS WHICH CHALLS WERE DONE BY THE USER
-        ChallData = new DataChall(this.user,this.Quest,false);
-        chall10.setVisible(ChallData.isChallDone(1));
-        chall1.setVisible(ChallData.isChallDone(1));
-        chall2.setVisible(ChallData.isChallDone(2));
-        chall3.setVisible(ChallData.isChallDone(3));
-        chall4.setVisible(ChallData.isChallDone(4));
-        chall5.setVisible(ChallData.isChallDone(5));
-        chall6.setVisible(ChallData.isChallDone(6));
-        chall7.setVisible(ChallData.isChallDone(7));
-        chall8.setVisible(ChallData.isChallDone(8));
-        chall9.setVisible(ChallData.isChallDone(9));
-    }
-    
-    private void setWizWelcome(String Location){
-        if("login".equals(Location)){
-            if (quests[0].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome back to the College of Wizardry and Science! <html>");}
-            if (quests[1].equals(Quest)){wizSpeachWelcome.setText("<html> Welcome back to the Fighters Guild!<html>");}
-            if (quests[2].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome back to the Arcane Order of the Mind!<html>");}
-        }
-        if("register".equals(Location) || "newAdventure".equals(Location)){
-            if (quests[0].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome to the College of Wizardry and Science! <html>");}
-            if (quests[1].equals(Quest)){wizSpeachWelcome.setText("<html> Welcome to the Fighters Guild!<html>");}
-            if (quests[2].equals(Quest)){ wizSpeachWelcome.setText("<html> Welcome to the Arcane Order of the Mind!<html>");}
-        }
-        if("WizHome".equals(Location)){
-            wizSpeachWelcome.setText("<html> Ocapse is a good driver , isn't he ? :)<html>");
-        }
-    }
-    
-    private void setSound(String dowhat , Clip clip){
-        if ("play".equals(dowhat)) {
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-        if ("stop".equals(dowhat)) {
-            clip.stop();
-        }
-    }
-    
-    private void updateCoinsDisplay(){
-        //UPDATE COINS DISPLAY
-        UserData = new DataUser(this.user);
-        this.wallet = UserData.getUserWallet();
-        coinLabel.setText(String.valueOf(this.wallet));
-    }
-    
-    private void updateWisdomDisplay(){
-        //UPDATE WISDOM DISPLAY
-        this.wisdom = UserData.getUserWisdom();
-        wisdomLabel.setText(String.valueOf(this.wisdom));
-        
-        //CHECK IF THE MUSHIE HAS GROWN
-        setImgs("mushie");
     }
     
     /**
@@ -1144,7 +1195,8 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_catalfButtonMouseClicked
 
     private void challengeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_challengeButtonMouseClicked
-        ChallData = new DataChall(user,Quest,true);
+        
+        ChallData.setNewChall();
         
         wizBallonChall.setVisible(true);
         wizSpeachChall.setVisible(true);
@@ -1212,17 +1264,15 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         challOn = false;
     }//GEN-LAST:event_completeButtonActionPerformed
 
-    
     private void newAdventureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAdventureButtonActionPerformed
+        AdventureSelection.setLocation("newAdventure");
         AdventureSelection new_adventure=new AdventureSelection();
-        new_adventure.passData(this.user,this.Class,"newAdventure");
         new_adventure.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_newAdventureButtonActionPerformed
 
     private void wizHouseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wizHouseButtonMouseClicked
         GameplayWizardHomeForm WizHomeTravel = new GameplayWizardHomeForm();
-        WizHomeTravel.passData(this.user);
         WizHomeTravel.setVisible(true);
         this.dispose();  
     }//GEN-LAST:event_wizHouseButtonMouseClicked
@@ -1386,6 +1436,11 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
     
     //CLOSE MINIMIZE AND LOGOUT ACTIONS 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 

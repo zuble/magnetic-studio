@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javaapplication1;
 
 import java.awt.Toolkit;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,34 +13,39 @@ import javax.swing.JOptionPane;
  */
 public class BasicsForm extends javax.swing.JFrame {
 
+    private int buttonPressedNo=0;
+    DBDataUser UserData;
+    
     /**
+     * 
      * Creates new form BasicsForm
      */
-    private int buttonPressedNo=0;
-    private String user;
-    private String Class;
-    DataUser UserData;
-    Login login;
-    
     public BasicsForm() {
         initComponents();
-        login = new Login();
         setIcon();
-        archerLabel.setVisible(false);
-        fighterLabel.setVisible(false);
-        healerLabel.setVisible(false);
+        setInitialVisuals();
+        UserData= new DBDataUser();
+    }
+    
+    /**
+     * set app icon
+     */
+    private void setIcon(){
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
+    }
+    
+    /**
+     * sets the inital visibility for labels/buttons and images
+     */
+    private void setInitialVisuals(){
+        archerImg.setVisible(false);
+        fighterImg.setVisible(false);
+        healerImg.setVisible(false);
         fighterButton.setVisible(false);
         archerButton.setVisible(false);
         healerButton.setVisible(false);
     }
     
-    public void setIcon(){
-         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
-    }
-    
-    public void passData(String user) {
-        this.user = user;     
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,11 +63,11 @@ public class BasicsForm extends javax.swing.JFrame {
         wizardSpeach = new javax.swing.JLabel();
         wizardBallon = new javax.swing.JLabel();
         continueButton = new javax.swing.JButton();
-        fighterLabel = new javax.swing.JLabel();
+        fighterImg = new javax.swing.JLabel();
         fighterButton = new javax.swing.JButton();
-        healerLabel = new javax.swing.JLabel();
+        healerImg = new javax.swing.JLabel();
         healerButton = new javax.swing.JButton();
-        archerLabel = new javax.swing.JLabel();
+        archerImg = new javax.swing.JLabel();
         archerButton = new javax.swing.JButton();
         background = new javax.swing.JLabel();
 
@@ -154,15 +152,10 @@ public class BasicsForm extends javax.swing.JFrame {
         jPanel2.add(continueButton);
         continueButton.setBounds(280, 460, 160, 30);
 
-        fighterLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fighter.png"))); // NOI18N
-        fighterLabel.setText("warrior");
-        fighterLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                fighterLabelMouseClicked(evt);
-            }
-        });
-        jPanel2.add(fighterLabel);
-        fighterLabel.setBounds(300, 200, 130, 150);
+        fighterImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fighter.png"))); // NOI18N
+        fighterImg.setText("warrior");
+        jPanel2.add(fighterImg);
+        fighterImg.setBounds(300, 200, 130, 150);
 
         fighterButton.setBackground(new java.awt.Color(255, 51, 51));
         fighterButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
@@ -177,9 +170,9 @@ public class BasicsForm extends javax.swing.JFrame {
         jPanel2.add(fighterButton);
         fighterButton.setBounds(320, 360, 80, 26);
 
-        healerLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/healer.png"))); // NOI18N
-        jPanel2.add(healerLabel);
-        healerLabel.setBounds(500, 210, 110, 130);
+        healerImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/healer.png"))); // NOI18N
+        jPanel2.add(healerImg);
+        healerImg.setBounds(500, 210, 110, 130);
 
         healerButton.setBackground(new java.awt.Color(204, 255, 255));
         healerButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
@@ -194,9 +187,9 @@ public class BasicsForm extends javax.swing.JFrame {
         jPanel2.add(healerButton);
         healerButton.setBounds(520, 360, 80, 26);
 
-        archerLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/archer.png"))); // NOI18N
-        jPanel2.add(archerLabel);
-        archerLabel.setBounds(120, 210, 110, 130);
+        archerImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/archer.png"))); // NOI18N
+        jPanel2.add(archerImg);
+        archerImg.setBounds(120, 210, 110, 130);
 
         archerButton.setBackground(new java.awt.Color(153, 255, 0));
         archerButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
@@ -224,96 +217,88 @@ public class BasicsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void continueButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_continueButtonMouseClicked
-        // TODO add your handling code here:
         buttonPressedNo ++;
+        
         if (buttonPressedNo==1){
             wizardSpeach.setText("<html> Let's pick your class! <html>");
         }
         if (buttonPressedNo==2){
             wizardSpeach.setText("<html>I'm... ahhh lets call it a Wizard!<html>");
-            archerLabel.setVisible(true);
-            fighterLabel.setVisible(true);
-            healerLabel.setVisible(true);
+            archerImg.setVisible(true);
+            fighterImg.setVisible(true);
+            healerImg.setVisible(true);
             fighterButton.setVisible(true);
             archerButton.setVisible(true);
             healerButton.setVisible(true);
             continueButton.setVisible(false);
         }
         if (buttonPressedNo==4){
+            AdventureSelection.setLocation("register");
             AdventureSelection ads = new AdventureSelection();
             ads.setVisible(true);
             ads.pack();
-            ads.passData(this.user, this.Class, "register");
-            ads.setLocationRelativeTo(null);
             this.dispose();
         }
     }//GEN-LAST:event_continueButtonMouseClicked
-
+    
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        // TODO add your handling code here:
+        UserData.deleteUserAcc();
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
-        // TODO add your handling code here:
         this.setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
-    private void fighterLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fighterLabelMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fighterLabelMouseClicked
-
     private void fighterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fighterButtonMouseClicked
-        
-        UserData = new DataUser(this.user);
         UserData.updateUserClass("fighter");
         JOptionPane.showMessageDialog(null, "Class selected!");
-        this.Class= "fighter";
         buttonPressedNo ++;
+        
         if (buttonPressedNo==3){
             wizardSpeach.setText("<html> A Fighter! I see you've got strength in you! <html>");
             archerButton.setVisible(false);
             healerButton.setVisible(false);
             fighterButton.setVisible(false);
-            archerLabel.setVisible(false);
-            healerLabel.setVisible(false);
+            archerImg.setVisible(false);
+            healerImg.setVisible(false);
             continueButton.setVisible(true);
-        }
-                  
+        }        
     }//GEN-LAST:event_fighterButtonMouseClicked
 
     private void healerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_healerButtonMouseClicked
-        
-        UserData = new DataUser(this.user);
         UserData.updateUserClass("healer");
         JOptionPane.showMessageDialog(null, "Class selected!");
-        this.Class= "healer";
         buttonPressedNo ++;
+        
         if (buttonPressedNo==3){
             wizardSpeach.setText("<html> A Healer! The brave protector of those in need! <html>");
             fighterButton.setVisible(false);
             archerButton.setVisible(false);
             healerButton.setVisible(false);
-            fighterLabel.setVisible(false);
-            archerLabel.setVisible(false);
+            fighterImg.setVisible(false);
+            archerImg.setVisible(false);
             continueButton.setVisible(true);
         }
     }//GEN-LAST:event_healerButtonMouseClicked
 
     private void archerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_archerButtonMouseClicked
-        
-        UserData = new DataUser(this.user);
         UserData.updateUserClass("archer");
         JOptionPane.showMessageDialog(null, "Class selected!");
-        this.Class= "archer";
         buttonPressedNo ++;
+        
         if (buttonPressedNo==3){
             wizardSpeach.setText("<html> An Archer! I can tell you've got keen eyes! <html>");
             fighterButton.setVisible(false);
             archerButton.setVisible(false);
             healerButton.setVisible(false);
-            fighterLabel.setVisible(false);
-            healerLabel.setVisible(false);
+            fighterImg.setVisible(false);
+            healerImg.setVisible(false);
             continueButton.setVisible(true);
         }
     }//GEN-LAST:event_archerButtonMouseClicked
@@ -355,15 +340,15 @@ public class BasicsForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton archerButton;
-    private javax.swing.JLabel archerLabel;
+    private javax.swing.JLabel archerImg;
     private javax.swing.JLabel background;
     private javax.swing.JLabel closeButton;
     private javax.swing.JPanel closeMinPanel;
     private javax.swing.JButton continueButton;
     private javax.swing.JButton fighterButton;
-    private javax.swing.JLabel fighterLabel;
+    private javax.swing.JLabel fighterImg;
     private javax.swing.JButton healerButton;
-    private javax.swing.JLabel healerLabel;
+    private javax.swing.JLabel healerImg;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel minimizeButton;
     private javax.swing.JLabel wizImg;

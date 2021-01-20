@@ -1,11 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javaapplication1;
 
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -16,13 +14,42 @@ import javax.swing.JOptionPane;
 public class AdventureSelection extends javax.swing.JFrame {
 
     private int buttonPressedNo;    
-    private String user , Quest , Class , Location;
-    private boolean atLeast1ChallDone;
-    DataUser UserData;
-    DataChall ChallData;
+    private static String Quest;
+    public static String Location;
+    public boolean aux = false;
+    DBDataUser UserData;
+    DBDataChall ChallData;
+    
     
     public AdventureSelection() {
+        UserData= new DBDataUser();
         initComponents();
+        setIcon();
+        setInitialVisuals();
+        setWizWelcome();
+    }
+    
+    /**
+     * sets the location according to the class that calls AdventureSelection
+     * @param location 
+     */
+    public static void setLocation(String location){
+        Location = location;
+    }
+    
+    /**
+     * sets the welcome speach of the wizard according to the location that the users comes from 
+     */
+    private void setWizWelcome(){
+        System.out.println("2"+Location);
+        if("register".equals(Location)){ wizSpeach.setText("<html>As any ambitious human, you need a focus, a direction, a quest! <html>"); }
+        if(Location.equals("newAdventure")){ wizSpeach.setText("<html>The thirst of knowledge must never, never cease.<html>"); }
+    }
+    
+    /**
+     * sets the inital visibility for labels/buttons and images
+     */
+    private void setInitialVisuals(){
         academicImg.setVisible(false);
         academicButton.setVisible(false);
         academicLabel.setVisible(false);
@@ -31,20 +58,15 @@ public class AdventureSelection extends javax.swing.JFrame {
         mindImg.setVisible(false);
         mindButton.setVisible(false);
         mindLabel.setVisible(false);
-        setIcon();
-         
     }
-    public void passData(String user, String Class, String Location) {
-        this.user = user;
-        this.Class = Class;
-        this.Location = Location;
-        
-        if(Location.equals("register"))wizSpeach.setText("<html>As any ambitious human, you need a focus, a direction, a quest! <html>");
-        if(Location.equals("newAdventure"))wizSpeach.setText("<html>The thirst of knowledge must never, never cease.<html>");   
+    
+    /**
+     * set app icon
+     */
+    private void setIcon(){
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
     }
-    public void setIcon(){
-         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/wizard.png")));
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -234,17 +256,20 @@ public class AdventureSelection extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        // TODO add your handling code here:
+        UserData.deleteUserAcc();
+        try {
+            DBCommunication.DBDisconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameplayUserHomeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
-        // TODO add your handling code here:
         this.setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_minimizeButtonMouseClicked
     
     private void continueButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_continueButtonMouseClicked
-        
         buttonPressedNo ++;
         if (buttonPressedNo==1){
             if(this.Location.equals("register")){wizSpeach.setText("<html>What type of adventure are you after? <html>");}
@@ -260,10 +285,11 @@ public class AdventureSelection extends javax.swing.JFrame {
             continueButton.setVisible(false);
         }
         if(buttonPressedNo == 3){
-            //IF QUEST HAS AT LEAST ONE CHALL DONE IT JUMPS TUTORIAL
-            if( this.Location.equals("newAdventure") && anyChallDone() ){
+            //IF QUEST HAS ANY DONE CHALL IT JUMPS TUTORIAL
+            ChallData = new DBDataChall();
+            if( this.Location.equals("newAdventure") && ChallData.anyChallDone() ){
                 GameplayUserHomeForm gmf = new GameplayUserHomeForm();
-                gmf.passData(this.user,this.Location);
+                gmf.setLocation(this.Location);
                 gmf.setVisible(true);
                 gmf.pack();
                 gmf.setLocationRelativeTo(null);
@@ -271,19 +297,18 @@ public class AdventureSelection extends javax.swing.JFrame {
             }
             else {
                 TutorialForm ttf = new TutorialForm();
+                ttf.setLocation(this.Location);
                 ttf.setVisible(true);
                 ttf.pack();
                 ttf.setLocationRelativeTo(null);
-                ttf.passData(this.user, this.Quest ,this.Class,this.Location);
                 this.dispose();
             }
         }
     }//GEN-LAST:event_continueButtonMouseClicked
 
     private void fitnessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fitnessButtonMouseClicked
-        this.Quest= "fitness";
-        UserData = new DataUser(this.user);
-        UserData.updateUserQuest(this.Quest);
+        AdventureSelection.Quest= "fitness";
+        UserData.updateUserQuest(AdventureSelection.Quest);
         JOptionPane.showMessageDialog(null, "Quest selected!");
         
         buttonPressedNo ++;
@@ -302,9 +327,8 @@ public class AdventureSelection extends javax.swing.JFrame {
     }//GEN-LAST:event_fitnessButtonMouseClicked
 
     private void academicButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_academicButtonMouseClicked
-        this.Quest= "academic";
-        UserData = new DataUser(this.user);
-        UserData.updateUserQuest(this.Quest);
+        AdventureSelection.Quest= "academic";
+        UserData.updateUserQuest(AdventureSelection.Quest);
         JOptionPane.showMessageDialog(null, "Quest selected!");
         
         buttonPressedNo ++;
@@ -323,9 +347,8 @@ public class AdventureSelection extends javax.swing.JFrame {
     }//GEN-LAST:event_academicButtonMouseClicked
 
     private void mindButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mindButtonMouseClicked
-        this.Quest = "mind";
-        UserData = new DataUser(this.user);
-        UserData.updateUserQuest(this.Quest);
+        AdventureSelection.Quest = "mind";
+        UserData.updateUserQuest(AdventureSelection.Quest);
         JOptionPane.showMessageDialog(null, "Quest selected!");
         
         buttonPressedNo ++;  
@@ -343,14 +366,7 @@ public class AdventureSelection extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mindButtonMouseClicked
     
-    //CHECKS IS THE USER HAS DONE ANY CHALLENGES IN THE NEW SELECTED QUEST
-    private boolean anyChallDone(){
-        ChallData = new DataChall(this.user,this.Quest,false);
-        for( int i = 1 ; i < 11 ; i++){
-            if ( ChallData.isChallDone(i) ) atLeast1ChallDone = true; 
-        }
-        return atLeast1ChallDone;
-    }
+     
     /**
      * @param args the command line arguments
      */
@@ -367,22 +383,16 @@ public class AdventureSelection extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdventureSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdventureSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdventureSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AdventureSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdventureSelection().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new AdventureSelection().setVisible(true);
         });
     }
 
