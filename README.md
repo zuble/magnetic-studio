@@ -1,2 +1,2 @@
 # magnetic-studio
-FEUP-LPRO final work 
+FEUP-LPRO final quest
