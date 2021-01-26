@@ -1,6 +1,5 @@
 package Main;
 
-
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
@@ -136,9 +135,9 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
      */
     private void setImgs( String IMG ){
         if( "background".equals(IMG) ){
-            //SET RUSSIA BACKGROUND AND ACCORDING FONT IF ITEM2 IS ACTIVED
-            if("ON".equals(ItemData.getItemState(2)) && ( "WizHome".equals(GameplayUserHomeForm.Location) || "UserHome".equals(GameplayUserHomeForm.Location) ) ) {
-                background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Russia.gif")));
+            //SET FINN BACKGROUND AND ACCORDING FONT IF ITEM2 IS ACTIVED
+            if("ON".equals(ItemData.getItemState(2)) /*&& ( "WizHome".equals(GameplayUserHomeForm.Location) || "UserHome".equals(GameplayUserHomeForm.Location) )*/ ) {
+                background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Saana.gif")));
 
                 catalfButton.setFont(new java.awt.Font("Futura Md BT", 1, 15));
                 userLabel.setFont(new java.awt.Font("Futura Md BT", 1, 15));
@@ -499,6 +498,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         logoutButton.setText("Logout");
         logoutButton.setBorder(null);
         logoutButton.setContentAreaFilled(false);
+        logoutButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         logoutButton.setFocusPainted(false);
         logoutButton.setFocusTraversalPolicyProvider(true);
         logoutButton.setFocusable(false);
@@ -546,6 +546,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         wizHouseButton.setToolTipText("");
         wizHouseButton.setBorder(new javax.swing.border.MatteBorder(null));
         wizHouseButton.setContentAreaFilled(false);
+        wizHouseButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         wizHouseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         wizHouseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         wizHouseButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -558,6 +559,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
 
         userButton.setBorder(new javax.swing.border.MatteBorder(null));
         userButton.setContentAreaFilled(false);
+        userButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         userButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 userButtonMouseClicked(evt);
@@ -624,6 +626,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         catalfButton.setText("Voiello the Rank Medium");
         catalfButton.setBorder(new javax.swing.border.MatteBorder(null));
         catalfButton.setContentAreaFilled(false);
+        catalfButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         catalfButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         catalfButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         catalfButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -849,6 +852,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         newAdventureButton.setText("New Adventure");
         newAdventureButton.setBorder(new javax.swing.border.MatteBorder(null));
         newAdventureButton.setBorderPainted(false);
+        newAdventureButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         newAdventureButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newAdventureButtonActionPerformed(evt);
@@ -872,6 +876,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         });
 
         Item2Inventory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/xtal2icon.png"))); // NOI18N
+        Item2Inventory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Item2Inventory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Item2InventoryMouseClicked(evt);
@@ -885,6 +890,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         });
 
         Item3Inventory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/xtal3icon.png"))); // NOI18N
+        Item3Inventory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Item3Inventory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         Item3Inventory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -899,6 +905,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         });
 
         Item4Inventory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/xtal4icon.png"))); // NOI18N
+        Item4Inventory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Item4Inventory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         Item4Inventory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -917,6 +924,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         BackpackButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         BackpackButton.setBorderPainted(false);
         BackpackButton.setContentAreaFilled(false);
+        BackpackButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BackpackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BackpackButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1114,6 +1122,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         completeButton.setForeground(new java.awt.Color(255, 255, 255));
         completeButton.setText("Complete");
         completeButton.setBorder(new javax.swing.border.MatteBorder(null));
+        completeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         completeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 completeButtonActionPerformed(evt);
@@ -1127,6 +1136,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
         challengeButton.setForeground(new java.awt.Color(255, 255, 255));
         challengeButton.setText("New challenge");
         challengeButton.setBorder(new javax.swing.border.MatteBorder(null));
+        challengeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         challengeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 challengeButtonMouseClicked(evt);
@@ -1346,7 +1356,7 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
 
     private void Item2InventoryMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item2InventoryMouseEntered
         if("OFF".equals(ItemData.getItemState(2))){
-            wizSpeachWelcome.setText("<html>Lets travel all the away to Russia ?<html>");
+            wizSpeachWelcome.setText("<html>Lets travel all the away to Finnland ?<html>");
         }
         if("ON".equals(ItemData.getItemState(2))){
             wizSpeachWelcome.setText("<html> White coldness full of beauty :) <html>");
@@ -1407,14 +1417,14 @@ public class GameplayUserHomeForm extends javax.swing.JFrame {
             Item3Inventory.setVisible(false);
             Item4Inventory.setVisible(false);
             //SETS BAU CLOSE
-            BackpackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/chest-close.png")));
+                BackpackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/chest-close.png")));
             buttonBackpack = 0;
         }
     }//GEN-LAST:event_BackpackButtonMouseClicked
 
     //SPECIAL USER INVENTORY ACTIONS
     private void Item2InventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item2InventoryMouseClicked
-        //MOVES USER HOUSE TO RUSSIA
+        //MOVES USER HOUSE TO FINN
         if( "OFF".equals(ItemData.getItemState(2))){
             ItemData.setItemState(2, "ON");
             setImgs("background");

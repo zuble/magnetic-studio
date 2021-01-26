@@ -20,7 +20,6 @@ public class AdventureSelection extends javax.swing.JFrame {
     DBDataUser UserData;
     DBDataChall ChallData;
     
-    
     public AdventureSelection() {
         UserData= new DBDataUser();
         initComponents();
@@ -164,16 +163,17 @@ public class AdventureSelection extends javax.swing.JFrame {
         jPanel1.add(academicImg);
         academicImg.setBounds(120, 270, 90, 70);
 
-        academicLabel.setFont(fitnessButton.getFont());
+        academicLabel.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         academicLabel.setForeground(new java.awt.Color(255, 255, 255));
         academicLabel.setText("<html>Improve     Academic  Performance");
+        academicLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         academicLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         academicLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         academicLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel1.add(academicLabel);
         academicLabel.setBounds(120, 350, 110, 40);
 
-        academicButton.setBackground(new java.awt.Color(51, 153, 255));
+        academicButton.setBackground(new java.awt.Color(51, 204, 0));
         academicButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         academicButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         academicButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -208,14 +208,15 @@ public class AdventureSelection extends javax.swing.JFrame {
         jPanel1.add(mindImg);
         mindImg.setBounds(510, 260, 90, 90);
 
-        mindLabel.setFont(academicLabel.getFont());
+        mindLabel.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         mindLabel.setForeground(new java.awt.Color(255, 255, 255));
         mindLabel.setText("<html>Achieve Peace of Mind<html>");
+        mindLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         mindLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(mindLabel);
         mindLabel.setBounds(510, 350, 90, 40);
 
-        mindButton.setBackground(new java.awt.Color(102, 255, 102));
+        mindButton.setBackground(new java.awt.Color(0, 204, 204));
         mindButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         mindButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         mindButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

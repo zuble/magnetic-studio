@@ -174,7 +174,7 @@ public class BasicsForm extends javax.swing.JFrame {
         jPanel2.add(healerImg);
         healerImg.setBounds(500, 210, 110, 130);
 
-        healerButton.setBackground(new java.awt.Color(204, 255, 255));
+        healerButton.setBackground(new java.awt.Color(0, 204, 204));
         healerButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         healerButton.setForeground(new java.awt.Color(255, 255, 255));
         healerButton.setText("Healer");
@@ -191,7 +191,7 @@ public class BasicsForm extends javax.swing.JFrame {
         jPanel2.add(archerImg);
         archerImg.setBounds(120, 210, 110, 130);
 
-        archerButton.setBackground(new java.awt.Color(153, 255, 0));
+        archerButton.setBackground(new java.awt.Color(51, 204, 0));
         archerButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         archerButton.setForeground(new java.awt.Color(255, 255, 255));
         archerButton.setText("Archer");

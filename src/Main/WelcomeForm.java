@@ -137,7 +137,7 @@ public class WelcomeForm extends javax.swing.JFrame {
             }
         });
         jPanel1.add(continueButton);
-        continueButton.setBounds(270, 440, 150, 30);
+        continueButton.setBounds(280, 460, 160, 30);
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/backgroundTown.png"))); // NOI18N
         background.setText("jLabel2");

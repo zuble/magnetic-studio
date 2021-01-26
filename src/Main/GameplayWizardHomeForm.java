@@ -297,6 +297,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         logoutButton.setText("Logout");
         logoutButton.setBorder(null);
         logoutButton.setContentAreaFilled(false);
+        logoutButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         logoutButton.setFocusPainted(false);
         logoutButton.setFocusTraversalPolicyProvider(true);
         logoutButton.setFocusable(false);
@@ -342,6 +343,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         wizItem1Panel.setOpaque(false);
 
         wizItem1Img.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/xtal1.png"))); // NOI18N
+        wizItem1Img.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         wizItem1Img.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 wizItem1ImgMouseEntered(evt);
@@ -358,6 +360,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         wizItem1Button.setBorder(new javax.swing.border.MatteBorder(null));
         wizItem1Button.setFocusPainted( false );
         wizItem1Button.setBorderPainted(false);
+        wizItem1Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         wizItem1Button.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         wizItem1Button.setOpaque(false);
         wizItem1Button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -405,6 +408,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         wizItem2Button.setBorder(new javax.swing.border.MatteBorder(null));
         wizItem2Button.setFocusPainted( false );
         wizItem2Button.setBorderPainted(false);
+        wizItem2Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         wizItem2Button.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         wizItem2Button.setOpaque(false);
         wizItem2Button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -454,6 +458,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         wizItem3Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/coin.png"))); // NOI18N
         wizItem3Button.setBorder(new javax.swing.border.MatteBorder(null));
         wizItem3Button.setBorderPainted(false);
+        wizItem3Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         wizItem3Button.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         wizItem3Button.setOpaque(false);
         wizItem3Button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -501,6 +506,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         wizItem4Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/coin.png"))); // NOI18N
         wizItem4Button.setBorder(new javax.swing.border.MatteBorder(null));
         wizItem4Button.setBorderPainted(false);
+        wizItem4Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         wizItem4Button.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         wizItem4Button.setOpaque(false);
         wizItem4Button.setFocusPainted( false );
@@ -562,7 +568,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(wizInventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(wizItem4Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(wizItem3Panel, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+                    .addComponent(wizItem3Panel, javax.swing.GroupLayout.PREFERRED_SIZE, 160, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -620,6 +626,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         backpackButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         backpackButton.setBorderPainted(false);
         backpackButton.setContentAreaFilled(false);
+        backpackButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         backpackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         backpackButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -695,6 +702,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         dragonButton.setToolTipText("Ocapse, the Wizard ride");
         dragonButton.setBorder(new javax.swing.border.MatteBorder(null));
         dragonButton.setContentAreaFilled(false);
+        dragonButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dragonButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         dragonButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         dragonButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -736,6 +744,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
 
         userButton.setBorder(new javax.swing.border.MatteBorder(null));
         userButton.setContentAreaFilled(false);
+        userButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         userButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 userButtonMouseClicked(evt);
@@ -800,6 +809,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         wizSpecialMessage.setToolTipText("Special moon potion");
         wizSpecialMessage.setBorderPainted(false);
         wizSpecialMessage.setContentAreaFilled(false);
+        wizSpecialMessage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         wizSpecialMessage.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 wizSpecialMessageMouseClicked(evt);
@@ -920,6 +930,7 @@ public class GameplayWizardHomeForm extends javax.swing.JFrame {
         ItemData.getDataItem(2);
         if( ItemData.areCoinsEnough(ItemData.getItemPrice(), wallet) ){
             UserData.updateUserWallet(ItemData.getItemPrice(),"minus");
+            UserData.updateUserWisdom(1);
             ItemData.insertItemBackpack(2);
             ItemData.setItemState(2,"OFF");
             setUser();

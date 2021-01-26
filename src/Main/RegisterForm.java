@@ -127,7 +127,7 @@ public class RegisterForm extends javax.swing.JFrame {
         );
 
         jPanel1.add(closeMinPanel);
-        closeMinPanel.setBounds(290, 0, 0, 30);
+        closeMinPanel.setBounds(290, 0, 78, 30);
 
         registerLabel.setBackground(new java.awt.Color(204, 204, 255));
         registerLabel.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
@@ -187,26 +187,28 @@ public class RegisterForm extends javax.swing.JFrame {
         registerButton.setForeground(new java.awt.Color(255, 255, 255));
         registerButton.setText("Register");
         registerButton.setBorder(new javax.swing.border.MatteBorder(null));
+        registerButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerButtonActionPerformed(evt);
             }
         });
         jPanel1.add(registerButton);
-        registerButton.setBounds(80, 420, 90, 20);
+        registerButton.setBounds(80, 410, 90, 30);
 
         cancelButton.setBackground(new java.awt.Color(255, 102, 102));
         cancelButton.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         cancelButton.setForeground(new java.awt.Color(255, 255, 255));
         cancelButton.setText("Cancel");
         cancelButton.setBorder(new javax.swing.border.MatteBorder(null));
+        cancelButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cancelButtonMouseClicked(evt);
             }
         });
         jPanel1.add(cancelButton);
-        cancelButton.setBounds(190, 420, 90, 20);
+        cancelButton.setBounds(190, 410, 90, 30);
 
         background.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/backgroundSnow.jpg"))); // NOI18N
